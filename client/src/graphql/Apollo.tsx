@@ -26,7 +26,6 @@ const onError = ({ graphQLErrors, networkError }: any): void => {
       // handle JWT error from Hasura
       if (message.includes('JWT')) {
         logOut();
-        document.location.reload();
       }
       return null;
     });

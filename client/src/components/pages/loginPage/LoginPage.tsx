@@ -76,7 +76,12 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <LoginPageWrapper>
-      <LoginForm onSubmit={performLogin}>
+      <LoginForm
+        onSubmit={(e: any) => {
+          e.preventDefault();
+          performLogin();
+        }}
+      >
         {error && <ErrorText>{error}</ErrorText>}
         <InputWrapper>
           School Email
