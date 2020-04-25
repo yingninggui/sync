@@ -5,15 +5,8 @@ import { PhoneMissed } from 'react-feather';
 import url from 'url';
 
 import Avatar from '../../common/Avatar';
+import RoundButton from '../../common/RoundButton';
 import { BorderRadius, DarkHover } from '../../../constants/Styles';
-
-const HangUpButton: React.FC<any> = () => {
-  return (
-    <HangUpButtonWrapper>
-      <PhoneMissed size={50} />
-    </HangUpButtonWrapper>
-  );
-};
 
 const SyncPage: React.FC<any> = ({ theme }) => {
   // const [publicFeed, setPublicFeed] = useState<boolean>(true);
@@ -40,7 +33,13 @@ const SyncPage: React.FC<any> = ({ theme }) => {
           </SyncPageCard>
         </Col>
       </Row>
-      <HangUpButton />
+      <HangUpButtonWrapper
+        textColor={theme.white}
+        bgColor={theme.error}
+        dimension={100}
+      >
+        <PhoneMissed size={50} />
+      </HangUpButtonWrapper>
       <div></div>
     </SyncPageWrapper>
   );
@@ -61,13 +60,7 @@ const SyncPageWrapper = styled.div`
   padding: ;
 `;
 
-const HangUpButtonWrapper = styled.div`
-  ${DarkHover()}
-  height: 100px;
-  width: 100px;
-  background-color: ${({ theme }) => theme.error};
-  color: ${({ theme }) => theme.white};
-  border-radius: 50%;
+const HangUpButtonWrapper = styled(RoundButton)`
   padding: 28px 0px 0px 23px;
 `;
 
