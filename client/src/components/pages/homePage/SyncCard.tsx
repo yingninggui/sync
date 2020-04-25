@@ -1,5 +1,10 @@
 import React from 'react';
+import { Sync } from '../../../graphql/Schema';
 
-const SyncCard: React.FC = () => <div>Sync Card</div>;
+interface SyncCardProps {
+  sync: Sync;
+}
+
+const SyncCard: React.FC<SyncCardProps> = () => <div>Sync Card</div>;
 
 export default SyncCard;
