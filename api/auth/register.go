@@ -24,10 +24,6 @@ type registerPayload struct {
 	} `json:"input"`
 }
 
-type registerResponse struct {
-	AccessToken string `json:"access_token"`
-}
-
 const bcryptCost = 10
 
 const insertUserQuery = `
@@ -35,24 +31,25 @@ INSERT INTO "user"(email, password_hash, username)
 VALUES ($1, $2, $3) RETURNING id
 `
 
-func register(tx *db.Tx, credentials *registerCredentials) (*registerResponse, error) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(credentials.Password), bcryptCost)
+func register(tx *db.Tx, email string, username string, password string) (*authResponse, error) {
+	var response authResponse
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcryptCost)
 	if err != nil {
 		return nil, fmt.Errorf("hashing password: %w", err)
 	}
 
-	var userId int
-	err = tx.QueryRow(insertUserQuery, credentials.Email, hash, credentials.Username).Scan(&userId)
+	err = tx.QueryRow(insertUserQuery, email, hash, username).Scan(&response.UserId)
 	if err != nil {
 		return nil, handle.WithEnum(handle.EmailTaken, fmt.Errorf("inserting user: %w", err))
 	}
 
-	token, err := jwt.MakeAndSign(userId)
+	response.AccessToken, err = jwt.MakeAndSign(response.UserId)
 	if err != nil {
 		return nil, fmt.Errorf("signing jwt: %w", err)
 	}
 
-	return &registerResponse{AccessToken: token}, nil
+	return &response, nil
 }
 
 const (
@@ -86,5 +83,5 @@ func HandleRegister(tx *db.Tx, r *http.Request) (interface{}, error) {
 		)
 	}
 
-	return register(tx, credentials)
+	return register(tx, credentials.Email, credentials.Username, credentials.Password)
 }

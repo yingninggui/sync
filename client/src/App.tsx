@@ -9,7 +9,6 @@ import {
 } from './constants/Routes';
 
 import Navbar from './components/navigation/Navbar';
-import Footer from './components/navigation/Footer';
 
 // TODO: Lazy load page components
 import HomePage from './components/pages/homePage/HomePage';
@@ -19,7 +18,10 @@ import LoginPage from './components/pages/loginPage/LoginPage';
 
 const App: React.FC = () => (
   <Router>
-    <Navbar />
+    <Switch>
+      <Route path={LOGIN_PAGE_ROUTE} component={() => null} />
+      <Route component={() => <Navbar />} />
+    </Switch>
     <Switch>
       <Route exact path={SYNC_PAGE_ROUTE} component={() => <SyncPage />} />
       <Route
@@ -31,7 +33,6 @@ const App: React.FC = () => (
       <Route exact path={HOME_PAGE_ROUTE} component={() => <HomePage />} />
       <Route component={() => <div>Not Found</div>} />
     </Switch>
-    {/* <Footer /> */}
   </Router>
 );
 
