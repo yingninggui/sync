@@ -9,6 +9,7 @@ export default {
   red: '#f88ba8',
   darkRed: '#ea4672',
   error: '#BB1E1E',
+  errorHover: '#cb2e2e',
 
   /* Greys */
   white: '#ffffff',
