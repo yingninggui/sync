@@ -27,6 +27,13 @@ services:
       - ./hasura/migrations:/hasura-migrations
       - ./hasura/metadata:/hasura-metadata
 
+  frontend:
+    build: ./client
+    container_name: frontend
+    expose:
+      - 80
+    restart: always
+
   nginx:
     container_name: nginx
     image: nginx:alpine
