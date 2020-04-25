@@ -9,7 +9,7 @@ import HomePage from './components/pages/HomePage';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 
-const App = () => (
+const App: React.FC = () => (
   <Router>
     <Navbar />
     <PageWrapper>

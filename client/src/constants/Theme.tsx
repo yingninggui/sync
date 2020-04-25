@@ -1,29 +1,24 @@
-import { PAGE_CONTENT_WIDTH } from './Styles';
-
 export default {
-  /* Colours */
-  primary: '#0052cc',
-  primaryDark: '#0747a6',
-  primaryExtraDark: '#042049',
-  courses: '#ff8b00',
-  professors: '#36b37e',
-  accent: '#ffc400',
-  accentDark: '#e8b300',
+  /* Primary Palette */
+  primary: '#61d0bd',
+  primaryLight: '#81e6bf',
+  primaryGrey: '#5b767f',
+  yellow: '#fffccf',
 
+  /* Red */
+  red: '#f88ba8',
+  darkRed: '#ea4672',
+
+  /* Greys */
+  white: '#ffffff',
   dark1: '#172b4d',
   dark2: '#505f79',
   dark3: '#97a0af',
+  light1: '#f4f4f4',
+  light2: '#e1e1e1',
+  light3: '#dedede',
+  light4: '#c6c6c6',
 
-  light1: '#f4f5f7',
-  light2: '#ebecf0',
-  light3: '#dfe1e5',
-  light4: '#c6c9c9',
-
-  white: '#ffffff',
-  red: '#ff5630',
-  darkRed: '#de350b',
-
-  google: '#4285f4',
   transparent: 'rgba(0,0,0,0)',
 
   breakpoints: {
@@ -31,6 +26,5 @@ export default {
     mobileSmall: 400,
     mobileLarge: 600,
     tablet: 800,
-    desktop: PAGE_CONTENT_WIDTH,
   },
 };
