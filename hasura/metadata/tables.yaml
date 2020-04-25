@@ -5,10 +5,30 @@
   - name: sync
     using:
       foreign_key_constraint_on: sync_id
+  array_relationships:
+  - name: users_completed
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_completed_checkpoint_view
+        column_mapping:
+          id: checkpoint_id
+- table:
+    schema: public
+    name: checkpoint_completed_by_user_view
 - table:
     schema: public
     name: community
   array_relationships:
+  - name: children
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: community_child_view
+        column_mapping:
+          id: community_id
   - name: syncs
     using:
       foreign_key_constraint_on:
@@ -16,6 +36,26 @@
         table:
           schema: public
           name: sync
+  - name: users
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: community_user_view
+        column_mapping:
+          id: community_id
+- table:
+    schema: public
+    name: community_child
+- table:
+    schema: public
+    name: community_child_view
+- table:
+    schema: public
+    name: community_user
+- table:
+    schema: public
+    name: community_user_view
 - table:
     schema: public
     name: sync
@@ -34,10 +74,57 @@
         table:
           schema: public
           name: checkpoint
+  - name: invited_users
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: sync_invited_user_view
+        column_mapping:
+          id: sync_id
+- table:
+    schema: public
+    name: sync_invited_user
+- table:
+    schema: public
+    name: sync_invited_user_view
 - table:
     schema: public
     name: user
+  object_relationships:
+  - name: friends
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_friend_view
+        column_mapping:
+          id: user_id
   array_relationships:
+  - name: communities
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_community_view
+        column_mapping:
+          id: user_id
+  - name: completed_checkpoints
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: checkpoint_completed_by_user_view
+        column_mapping:
+          id: user_id
+  - name: invited_syncs
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_invited_sync_view
+        column_mapping:
+          id: user_id
   - name: owned_syncs
     using:
       foreign_key_constraint_on:
@@ -45,3 +132,69 @@
         table:
           schema: public
           name: sync
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      - id
+      - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      - password_hash
+      - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: user_community_view
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - name
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+- table:
+    schema: public
+    name: user_completed_checkpoint
+- table:
+    schema: public
+    name: user_completed_checkpoint_view
+- table:
+    schema: public
+    name: user_friend
+- table:
+    schema: public
+    name: user_friend_view
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      - username
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+- table:
+    schema: public
+    name: user_invited_sync_view
