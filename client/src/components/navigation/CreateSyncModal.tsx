@@ -12,6 +12,7 @@ import {
 } from '../../constants/Styles';
 import Button from '../common/Button';
 import { ThemeInterface } from '../../styled';
+import Dropdown from '../common/Dropdown';
 
 interface CreateSyncModalProps {
   theme: ThemeInterface;
@@ -23,7 +24,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
   closeModal,
 }) => {
   const [title, setTitle] = useState<string>('');
-  const [publicSync, setPublicSync] = useState<boolean>(false);
+  const [publicSync, setPublicSync] = useState<number>(1);
   const [deadline, setDeadline] = useState<Date>(new Date());
 
   return (
@@ -40,34 +41,36 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         <InputIcon>
           <Users color={theme.light4} />
         </InputIcon>
-        Invite friends
-        <TextInput placeholder="Invite friends" />
+        <TextInput placeholder="Invite friends @" />
       </InputWrapper>
       <InputWrapper>
-        <InputWrapper>
-          <InputIcon>
-            <Clock color={theme.light4} />
-          </InputIcon>
-          <StyledDateTimePicker
-            onChange={(date: Date) => setDeadline(date)}
-            value={deadline}
-            disableClock
-            calendarIcon={null}
-            clearIcon={null}
-            maxDetail="minute"
-          />
-        </InputWrapper>
-        <InputWrapper>
-          <InputIcon>
-            {publicSync ? (
-              <Unlock color={theme.light4} />
-            ) : (
-              <Lock color={theme.light4} />
-            )}
-          </InputIcon>
-          <TextInput placeholder="Private" />
-        </InputWrapper>
+        <InputIcon>
+          <Clock color={theme.light4} />
+        </InputIcon>
+        <StyledDateTimePicker
+          onChange={(date: Date) => setDeadline(date)}
+          value={deadline}
+          disableClock
+          calendarIcon={null}
+          clearIcon={null}
+          maxDetail="minute"
+        />
       </InputWrapper>
+      <InputWrapper>
+        <InputIcon>
+          {publicSync ? (
+            <Unlock color={theme.light4} />
+          ) : (
+            <Lock color={theme.light4} />
+          )}
+        </InputIcon>
+        <Dropdown
+          items={['Private', 'Public']}
+          selectedIndex={publicSync}
+          setSelectedIndex={setPublicSync}
+        />
+      </InputWrapper>
+
       <ButtonWrapper>
         <Button margin="0 8px 0 0" onClick={closeModal}>
           Cancel
@@ -107,13 +110,12 @@ const TextInput = styled.input`
   ${Input}
   width: 100%;
   padding: 8px 16px;
-  margin-top: 8px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  margin-top: 8px;
 `;
 
 const InputIcon = styled.div`
@@ -124,14 +126,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-content: flex-end;
   margin-left: auto;
-  margin-top: 16px;
 `;
 
 const StyledDateTimePicker = styled(DateTimePicker)`
   .react-datetime-picker__wrapper {
     ${Input}
     padding: 8px 16px;
-    margin-top: 8px;
   }
 
   .react-datetime-picker__inputGroup__input {
