@@ -1,7 +1,7 @@
 actions:
 - name: login_user
   definition:
-    kind: ""
+    kind: synchronous
     handler: http://api:8000/login
   permissions:
   - role: anonymous
