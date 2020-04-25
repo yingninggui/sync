@@ -10,8 +10,6 @@ import Theme from './constants/Theme';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import * as serviceWorker from './serviceWorker';
-
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={Theme}>
@@ -20,7 +18,5 @@ ReactDOM.render(
       </ApolloProvider>
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
-
-serviceWorker.unregister();

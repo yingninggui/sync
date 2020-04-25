@@ -2,11 +2,7 @@ import React from 'react';
 import { Navbar as ReactstrapNavbar } from 'reactstrap';
 import styled from 'styled-components';
 
-const Navbar = () => {
-  return (
-    <StyledNavbar>Sync</StyledNavbar>
-  )
-}
+const Navbar = () => <StyledNavbar>Sync</StyledNavbar>;
 
 export default Navbar;
 

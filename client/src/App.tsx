@@ -9,32 +9,20 @@ import HomePage from './components/pages/HomePage';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 
-function App() {
-  return (
-    <Router>
-      <Navbar />
-      <PageWrapper>
-        <Switch>
-          <Route
-            exact
-            path={HOME_PAGE_ROUTE}
-            component={() => <HomePage />}
-          />
-          <Route
-            path={PROFILE_PAGE_ROUTE}
-            component={() => <div />}
-          />
-          <Route
-            path={SYNC_PAGE_ROUTE}
-            component={() => <div />}
-          />
-          <Route component={() => <div>Not Found</div>} />
-        </Switch>
-      </PageWrapper>
-      <Footer />
-    </Router>
-  );
-}
+const App = () => (
+  <Router>
+    <Navbar />
+    <PageWrapper>
+      <Switch>
+        <Route exact path={HOME_PAGE_ROUTE} component={() => <HomePage />} />
+        <Route path={PROFILE_PAGE_ROUTE} component={() => <div />} />
+        <Route path={SYNC_PAGE_ROUTE} component={() => <div />} />
+        <Route component={() => <div>Not Found</div>} />
+      </Switch>
+    </PageWrapper>
+    <Footer />
+  </Router>
+);
 
 export default App;
 

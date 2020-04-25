@@ -16,6 +16,12 @@ module.exports = {
     }
   },
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    'no-console': 'off',
+    'no-underscore-dangle': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'react/prefer-default-export': 'off',
   },
   settings: {
     react: {
