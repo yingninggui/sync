@@ -1,7 +1,7 @@
 FROM node:alpine AS builder
 
 COPY . .
-RUN npm install && npm run build
+RUN yarn install && yarn build
 
 FROM busybox:musl
 
