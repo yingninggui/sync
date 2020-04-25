@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  postgres:
+    container_name: postgres
+    env_file: .env
+    image: postgres:12-alpine
+    ports:
+      - $POSTGRES_PORT:$POSTGRES_PORT
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+  hasura:
+    container_name: hasura
+    depends_on:
+      - postgres
+    env_file: .env
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "${HASURA_GRAPHQL_JWT_KEY}"}'
+    image: hasura/graphql-engine:v1.2.0-beta.4.cli-migrations-v2
+    ports:
+      - $HASURA_GRAPHQL_SERVER_PORT:$HASURA_GRAPHQL_SERVER_PORT
+    restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
+
+volumes:
+  postgres:
