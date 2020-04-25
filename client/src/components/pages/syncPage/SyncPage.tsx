@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Row, Col } from 'reactstrap';
-import { PhoneMissed } from 'react-feather';
+import { PhoneMissed, MicOff } from 'react-feather';
 import url from 'url';
 
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
+import Checkbox from '../../common/Checkbox';
 import { BorderRadius, DarkHover } from '../../../constants/Styles';
 
 const SyncPage: React.FC<any> = ({ theme }) => {
@@ -14,6 +15,18 @@ const SyncPage: React.FC<any> = ({ theme }) => {
     { bgColor: theme.red, height: 100, width: 100 },
     { bgColor: theme.red, height: 100, width: 100 },
   ];
+  const [cSelected, setCSelected] = useState<Array<any>>([]);
+  const onCheckboxBtnClick = (selected: any) => {
+    const index: number = cSelected.indexOf(selected);
+    if (index < 0) {
+      cSelected.push(selected);
+    } else {
+      cSelected.splice(index, 1);
+    }
+    setCSelected([...cSelected]);
+  };
+
+  const items: Array<string> = ['Item one', 'item two'];
 
   return (
     <SyncPageWrapper>
@@ -23,6 +36,15 @@ const SyncPage: React.FC<any> = ({ theme }) => {
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
             <h3>Checkpoints</h3>
+            {items.map((item) => (
+              <Checkbox
+                key={item}
+                onClick={() => onCheckboxBtnClick(item)}
+                active={cSelected.includes(item)}
+                text={item}
+              />
+            ))}
+            <p>Selected: {JSON.stringify(cSelected)}</p>
           </SyncPageCard>
         </Col>
         <Col style={{ padding: '0px 50px' }}>
@@ -33,13 +55,24 @@ const SyncPage: React.FC<any> = ({ theme }) => {
           </SyncPageCard>
         </Col>
       </Row>
-      <HangUpButtonWrapper
-        textColor={theme.white}
-        bgColor={theme.error}
-        dimension={100}
-      >
-        <PhoneMissed size={50} />
-      </HangUpButtonWrapper>
+      <Row>
+        <RoundButton
+          textColor={theme.white}
+          bgColor={theme.primary}
+          dimension={100}
+          margin="0px 20px"
+        >
+          <MicOff size={50} />
+        </RoundButton>
+        <RoundButton
+          textColor={theme.white}
+          bgColor={theme.error}
+          dimension={100}
+          margin="0px 20px"
+        >
+          <PhoneMissed size={50} />
+        </RoundButton>
+      </Row>
       <div></div>
     </SyncPageWrapper>
   );
@@ -60,13 +93,9 @@ const SyncPageWrapper = styled.div`
   padding: ;
 `;
 
-const HangUpButtonWrapper = styled(RoundButton)`
-  padding: 28px 0px 0px 23px;
-`;
-
 const SyncPageCard = styled.div`
     ${BorderRadius}
-    background-color: ${({ theme }) => `${theme.white}80`};
+    background-color: ${({ theme }) => `${theme.white}B0`};
     min-width: 300px;
     height: 100%;
     width: 30vw;

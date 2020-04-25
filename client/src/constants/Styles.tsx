@@ -21,6 +21,14 @@ export const HoverTransition = (target = 'all', time = '0.1s') => css`
   transition: ${target} ${time} ease-in-out;
 `;
 
+export const Active = css`
+  cursor: pointer;
+  filter: brightness(50%);
+  &:hover,
+  &:focus {
+    filter: brightness(50%);
+  }
+`;
 export const DarkHover = (darker = false) => css`
   ${HoverTransition()}
 
@@ -30,8 +38,7 @@ export const DarkHover = (darker = false) => css`
   }
 
   &:active {
-    cursor: pointer;
-    filter: brightness(${darker ? '50%' : '75%'});
+    ${Active}
   }
 `;
 

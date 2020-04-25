@@ -6,6 +6,7 @@ interface RoundButtonProps {
   textColor?: string;
   bgColor?: string;
   dimension?: number;
+  margin?: string;
   onClick?: () => void;
 }
 
@@ -13,6 +14,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({
   textColor,
   bgColor,
   dimension,
+  margin = '0',
   onClick = () => {},
   children,
 }) => (
@@ -21,6 +23,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({
     bgColor={bgColor}
     dimension={dimension}
     onClick={onClick}
+    margin={margin}
   >
     {children}
   </RoundButtonStyle>
@@ -32,6 +35,7 @@ const RoundButtonStyle = styled.button<{
   textColor?: string;
   bgColor?: string;
   dimension?: number;
+  margin: string;
 }>`
   ${DarkHover()}
   text-align: center;
@@ -44,4 +48,5 @@ const RoundButtonStyle = styled.button<{
   background: ${({ bgColor, theme }) => bgColor || theme.primaryGrey};
   width: ${({ dimension }) => dimension || '100'}px;
   height: ${({ dimension }) => dimension || '100'}px;
+  margin: ${({ margin }) => margin};
 `;

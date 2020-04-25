@@ -11,6 +11,9 @@ export default {
   error: '#BB1E1E',
   errorHover: '#cb2e2e',
 
+  /* green */
+  success: '#00FF7F',
+
   /* Greys */
   white: '#ffffff',
   dark1: '#172b4d',
