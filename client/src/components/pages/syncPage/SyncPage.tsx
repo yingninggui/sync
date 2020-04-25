@@ -4,11 +4,10 @@ import { Row, Col } from 'reactstrap';
 import { PhoneMissed } from 'react-feather';
 import url from 'url';
 
-import Button from '../../common/Button';
 import Avatar from '../../common/Avatar';
 import { BorderRadius, DarkHover } from '../../../constants/Styles';
 
-const HangUpButton: React.FC<any> = ({ theme }) => {
+const HangUpButton: React.FC<any> = () => {
   return (
     <HangUpButtonWrapper>
       <PhoneMissed size={50} />

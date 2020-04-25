@@ -22,7 +22,7 @@ const CircleButton: React.FC<CircleButtonProps> = ({
     dimension={dimension}
     onClick={onClick}
   >
-    {'+'}
+    {children}
   </CircleButtonStyle>
 );
 
