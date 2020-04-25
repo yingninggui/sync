@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Modal } from 'reactstrap';
+import { Plus } from 'react-feather';
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
 import {
@@ -33,7 +34,9 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             dimension={80}
             onClick={() => setAddFriendModal(true)}
           >
-            +
+            <Icons>
+              <Plus size={20} />
+            </Icons>
           </CircleButton>
           <BodyText>+friends</BodyText>
         </ListItemWrapper>
@@ -59,7 +62,9 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             dimension={80}
             onClick={() => setAddCommunityModal(true)}
           >
-            +
+            <Icons>
+              <Plus size={20} />
+            </Icons>
           </CircleButton>
           <BodyText>+community</BodyText>
         </ListItemWrapper>
@@ -157,4 +162,8 @@ const SearchInput = styled.input`
 
 const ModalStyle = styled.div`
   padding: 24px;
+`;
+
+const Icons = styled.div`
+  display: flex;
 `;
