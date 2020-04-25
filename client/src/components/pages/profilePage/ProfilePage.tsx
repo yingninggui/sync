@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import Avatar from '../../common/Avatar';
+import CircleButton from '../../common/CircleButton';
 import {
   PageContent,
   Heading1,
@@ -12,7 +13,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
   return (
     <ProfilePageWrapper>
       <UserWrapper>
-        <Avatar dimension={100} letterSize={25} name={'Y'} />
+        <Avatar dimension={80} letterSize={25} name={'therealyg'} />
         <UsernameWrapper>
           <TitleText>Username</TitleText>
           <UsernameBodyText>@therealyg</UsernameBodyText>
@@ -21,12 +22,49 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
       <TitleText>Friends</TitleText>
       <ListWrapper>
         <ListItemWrapper>
-          <Avatar dimension={100} letterSize={25} name={'Y'} />
+          <CircleButton
+            textColor={theme.white}
+            bgColor={theme.primaryGrey}
+            dimension={80}
+          />
+          <BodyText>+friends</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'therealyg'} />
           <BodyText>@therealyg</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'yayimahuman'} />
+          <BodyText>@yayhuman</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'ez'} />
+          <BodyText>@ez</BodyText>
         </ListItemWrapper>
       </ListWrapper>
       <TitleText>Communities</TitleText>
-      <ListWrapper></ListWrapper>
+      <ListWrapper>
+        <ListItemWrapper>
+          <CircleButton
+            textColor={theme.white}
+            bgColor={theme.primaryGrey}
+            dimension={80}
+          />
+          <BodyText>+community</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'se2022'} />
+          <BodyText>@software</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'math239'} />
+          <BodyText>@math239</BodyText>
+        </ListItemWrapper>
+        <ListItemWrapper>
+          <Avatar dimension={80} letterSize={25} name={'waterloo'} />
+          <BodyText>@waterloo</BodyText>
+        </ListItemWrapper>
+      </ListWrapper>
     </ProfilePageWrapper>
   );
 };
@@ -61,16 +99,16 @@ const BodyText = styled.div`
 `;
 
 const ListItemWrapper = styled.div`
-  padding: 24px 0;
   display: flex-direction-column;
   text-align: center;
   justify-content: center;
   align-items: center;
+  margin-right: 24px;
 `;
 
 const ListWrapper = styled.div`
   ${PageContent}
   padding: 24px 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
 `;
