@@ -2,7 +2,7 @@ actions:
 - name: login_user
   definition:
     kind: ""
-    handler: http://localhost:8000/login
+    handler: http://api:8000/login
   permissions:
   - role: anonymous
   - role: user
