@@ -1,14 +1,14 @@
 package env
 
 import (
-  "fmt"
-  "reflect"
-  "os"
+	"fmt"
+	"os"
+	"reflect"
 )
 
 type Environment struct {
-  JwtKey []byte `from:"HASURA_GRAPHQL_JWT_KEY"`
-  PostgresConnString string `from:"HASURA_GRAPHQL_DATABASE_URL"`
+	JwtKey             []byte `from:"HASURA_GRAPHQL_JWT_KEY"`
+	PostgresConnString string `from:"HASURA_GRAPHQL_DATABASE_URL"`
 }
 
 var Global Environment
@@ -22,10 +22,10 @@ func Get(env *Environment) error {
 		value, exists := os.LookupEnv(key)
 		if !exists {
 			return fmt.Errorf("environment variable %s is not set", key)
-    }
-    fieldType := refType.Field(i).Type
-    convertedValue := reflect.ValueOf(value).Convert(fieldType)
-    refValue.Field(i).Set(convertedValue)
+		}
+		fieldType := refType.Field(i).Type
+		convertedValue := reflect.ValueOf(value).Convert(fieldType)
+		refValue.Field(i).Set(convertedValue)
 	}
 
 	return nil
