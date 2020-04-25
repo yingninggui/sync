@@ -8,6 +8,7 @@ import {
   Input,
   BoxShadow,
   InterFont,
+  DarkHover,
 } from '../../constants/Styles';
 import Button from '../common/Button';
 import { ThemeInterface } from '../../styled';
@@ -43,28 +44,29 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         <TextInput placeholder="Invite friends" />
       </InputWrapper>
       <InputWrapper>
-        <InputIcon>
-          {publicSync ? (
-            <Unlock color={theme.light4} />
-          ) : (
-            <Lock color={theme.light4} />
-          )}
-        </InputIcon>
-        <TextInput placeholder="Private" />
-      </InputWrapper>
-      <InputWrapper>
-        <InputIcon>
-          <Clock color={theme.light4} />
-        </InputIcon>
-        Deadline
-        <StyledDateTimePicker
-          onChange={(date: Date) => setDeadline(date)}
-          value={deadline}
-          disableClock
-          calendarIcon={null}
-          clearIcon={null}
-          maxDetail="minute"
-        />
+        <InputWrapper>
+          <InputIcon>
+            <Clock color={theme.light4} />
+          </InputIcon>
+          <StyledDateTimePicker
+            onChange={(date: Date) => setDeadline(date)}
+            value={deadline}
+            disableClock
+            calendarIcon={null}
+            clearIcon={null}
+            maxDetail="minute"
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <InputIcon>
+            {publicSync ? (
+              <Unlock color={theme.light4} />
+            ) : (
+              <Lock color={theme.light4} />
+            )}
+          </InputIcon>
+          <TextInput placeholder="Private" />
+        </InputWrapper>
       </InputWrapper>
       <ButtonWrapper>
         <Button margin="0 8px 0 0" onClick={closeModal}>
@@ -111,6 +113,7 @@ const TextInput = styled.input`
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const InputIcon = styled.div`
@@ -131,6 +134,10 @@ const StyledDateTimePicker = styled(DateTimePicker)`
     margin-top: 8px;
   }
 
+  .react-datetime-picker__inputGroup__input {
+    ${BorderRadius}
+  }
+
   .react-calendar {
     ${InterFont}
     ${BorderRadius}
@@ -139,18 +146,27 @@ const StyledDateTimePicker = styled(DateTimePicker)`
 
     .react-calendar__tile {
       ${BorderRadius}
+      color: ${({ theme }) => theme.primaryGrey} !important;
     }
 
     .react-calendar__tile--active {
+      background: ${({ theme }) => theme.primaryLight} !important;
+      color: ${({ theme }) => theme.primaryGrey} !important;
+      font-weight: 700;
+      ${DarkHover()}
       
+      &:focus, &:active {
+        outline: none;
+      }
     }
 
     .react-calendar__month-view__days__day--weekend {
-      color: ${({ theme }) => theme.darkRed};
+      color: ${({ theme }) => theme.primaryGrey};
     }
 
     .react-calendar__tile--now {
       background: ${({ theme }) => theme.yellow};
+      ${DarkHover()}
     }
   }
 `;
