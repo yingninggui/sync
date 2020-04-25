@@ -1,1 +1,47 @@
-[]
+- table:
+    schema: public
+    name: checkpoint
+  object_relationships:
+  - name: sync
+    using:
+      foreign_key_constraint_on: sync_id
+- table:
+    schema: public
+    name: community
+  array_relationships:
+  - name: syncs
+    using:
+      foreign_key_constraint_on:
+        column: community_id
+        table:
+          schema: public
+          name: sync
+- table:
+    schema: public
+    name: sync
+  object_relationships:
+  - name: community
+    using:
+      foreign_key_constraint_on: community_id
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+  array_relationships:
+  - name: checkpoints
+    using:
+      foreign_key_constraint_on:
+        column: sync_id
+        table:
+          schema: public
+          name: checkpoint
+- table:
+    schema: public
+    name: user
+  array_relationships:
+  - name: owned_syncs
+    using:
+      foreign_key_constraint_on:
+        column: owner_id
+        table:
+          schema: public
+          name: sync
