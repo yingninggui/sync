@@ -1,20 +1,42 @@
 import React, { useState } from 'react';
-import styled, { withTheme } from 'styled-components';
-import { Row, Col } from 'reactstrap';
 import { PhoneMissed, MicOff } from 'react-feather';
+import { Row, Col } from 'reactstrap';
+import { useQuery } from '@apollo/react-hooks';
+import styled, { withTheme } from 'styled-components';
 import url from 'url';
+import gql from 'graphql-tag';
 
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
-import { BorderRadius, DarkHover } from '../../../constants/Styles';
+import { BorderRadius } from '../../../constants/Styles';
 
-const SyncPage: React.FC<any> = ({ theme }) => {
-  // const [publicFeed, setPublicFeed] = useState<boolean>(true);
-  const users: Array<any> = [
-    { bgColor: theme.red, height: 100, width: 100 },
-    { bgColor: theme.red, height: 100, width: 100 },
-  ];
+import { User, Checkpoint, Sync } from '../../../graphql/Schema';
+import { SyncFragment } from '../../../graphql/Fragments';
+
+const GET_SYNC_DETAILS = gql`
+  query getSyncDetails($id: Int!) {
+    sync_by_pk(id: $id) {
+      ...SyncInfo
+      ...SyncUsers
+      ...SyncCheckpoints
+    }
+  }
+  ${SyncFragment.syncInfo}
+  ${SyncFragment.syncUsers}
+  ${SyncFragment.syncCheckpoints}
+`;
+
+const SyncPage: React.FC<any> = ({ theme, match }) => {
+  const users: Array<User> = [];
+  const checkpoints: Array<Checkpoint> = [];
+  const syncID = parseInt(match.params.syncID, 10);
+  const { loading, error, data } = useQuery<{ sync: Sync }>(GET_SYNC_DETAILS, {
+    variables: { id: syncID },
+  });
+
+  console.log(loading, error, data);
+
   const [cSelected, setCSelected] = useState<Array<any>>([]);
   const onCheckboxBtnClick = (selected: any) => {
     const index: number = cSelected.indexOf(selected);
@@ -26,22 +48,20 @@ const SyncPage: React.FC<any> = ({ theme }) => {
     setCSelected([...cSelected]);
   };
 
-  const items: Array<string> = ['Item one', 'item two'];
-
   return (
     <SyncPageWrapper>
       <div></div>
-      <Row>{users.map(Avatar)}</Row>
+      <Row>{users.map((user) => ({ name: user.username })).map(Avatar)}</Row>
       <Row>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
             <h3>Checkpoints</h3>
-            {items.map((item) => (
+            {checkpoints.map(({ id: checkpointId, name }) => (
               <Checkbox
-                key={item}
-                onClick={() => onCheckboxBtnClick(item)}
-                active={cSelected.includes(item)}
-                text={item}
+                key={checkpointId}
+                onClick={() => onCheckboxBtnClick(checkpointId)}
+                active={cSelected.includes(checkpointId)}
+                text={name}
               />
             ))}
           </SyncPageCard>

@@ -91,15 +91,6 @@
 - table:
     schema: public
     name: user
-  object_relationships:
-  - name: friends
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: user_friend_view
-        column_mapping:
-          id: user_id
   array_relationships:
   - name: communities
     using:
@@ -115,6 +106,14 @@
         remote_table:
           schema: public
           name: checkpoint_completed_by_user_view
+        column_mapping:
+          id: user_id
+  - name: friends
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: user_friend_view
         column_mapping:
           id: user_id
   - name: invited_syncs
