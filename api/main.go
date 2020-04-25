@@ -18,6 +18,7 @@ func main() {
 		return
 	}
 
+	http.HandleFunc("/login", handle.WithDbResponse(conn, auth.HandleLogin, "login"))
 	http.HandleFunc("/register", handle.WithDbResponse(conn, auth.HandleRegister, "register"))
 
 	err = http.ListenAndServe(":8000", nil)
