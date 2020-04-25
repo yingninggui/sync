@@ -24,7 +24,7 @@ const Avatar: React.FC<AvatarProps> = ({
   >
     {firstLetter}
   </AvatarStyle>
-);
+}
 
 export default Avatar;
 

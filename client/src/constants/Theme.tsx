@@ -8,6 +8,7 @@ export default {
   /* Red */
   red: '#f88ba8',
   darkRed: '#ea4672',
+  error: '#BB1E1E',
 
   /* Greys */
   white: '#ffffff',
