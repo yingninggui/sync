@@ -14,6 +14,10 @@ export interface Community {
   users: User[];
 }
 
+export interface LogIn {
+  access_token: string;
+}
+
 export interface Sync {
   id: number;
   cover_photo_url: string;

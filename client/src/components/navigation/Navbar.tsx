@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { User, Edit } from 'react-feather';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
@@ -11,10 +11,21 @@ import {
   BorderRadius,
   Body,
 } from '../../constants/Styles';
-import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
+import {
+  PROFILE_PAGE_ROUTE,
+  HOME_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE,
+} from '../../constants/Routes';
+import { isLoggedIn } from '../../utils/Auth';
 
 const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
   const [taskModal, setTaskModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      history.push(LOGIN_PAGE_ROUTE);
+    }
+  }, [history]);
 
   return (
     <StyledNavbar>

@@ -9,6 +9,7 @@ interface ButtonProps {
   fontWeight?: number;
   margin?: string;
   onClick?: () => void;
+  type?: 'button' | 'submit';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   fontWeight = 400,
   margin = '0',
   onClick = () => {},
+  type = 'button',
   children,
 }) => (
   <StyledButton
@@ -26,6 +28,7 @@ const Button: React.FC<ButtonProps> = ({
     bgColor={bgColor}
     fontWeight={fontWeight}
     margin={margin}
+    type={type}
   >
     {children}
   </StyledButton>

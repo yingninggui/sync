@@ -9,8 +9,8 @@ import SyncCard from './SyncCard';
 import { Sync } from '../../../graphql/Schema';
 import { SyncFragment } from '../../../graphql/Fragments';
 
-export const GET_FEED_QUERY = gql`
-  query getPublicFeed($public: Boolean) {
+const GET_FEED = gql`
+  query getPublicFeed($public: Boolean!) {
     sync(where: { public: { _eq: $public } }) {
       ...SyncInfo
       ...SyncUsers
@@ -22,7 +22,7 @@ export const GET_FEED_QUERY = gql`
 
 const HomePage: React.FC<any> = ({ theme }) => {
   const [publicFeed, setPublicFeed] = useState<boolean>(true);
-  const { loading, error, data } = useQuery<{ sync: Sync[] }>(GET_FEED_QUERY, {
+  const { loading, error, data } = useQuery<{ sync: Sync[] }>(GET_FEED, {
     variables: { public: publicFeed },
   });
 
