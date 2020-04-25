@@ -15,13 +15,12 @@ const gradientPairings = [
 ];
 
 function getGradient(username: string): string[] {
-  const hash = 0;
   if (username.length === 0) return gradientPairings[0];
-  let charSum = 0;
+  let hash = 0;
   for (let i = 0; i < username.length; i += 1) {
-    charSum += username.charCodeAt(i);
+    hash += username.charCodeAt(i);
   }
-  return gradientPairings[Math.min(0, (hash % 10) - 1)];
+  return gradientPairings[hash % 10];
 }
 
 interface AvatarProps {
@@ -58,8 +57,6 @@ const AvatarStyle = styled.div<{
   font-size: ${({ letterSize }) => letterSize || '30'}px;
   background: ${({ theme }) => theme.red};
   width: ${({ dimension }) => dimension || '100'}px;
-  background-image: linear-gradient(
-    ${({ bg }) => `${console.log(bg)}, ${console.log(bg)}`}
-  );
+  background-image: linear-gradient(${({ bg }) => `${bg[0]}, ${bg[1]}`});
   height: ${({ dimension }) => dimension || '100'}px;
 `;
