@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { User, Edit } from 'react-feather';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
+import { Modal } from 'reactstrap';
 
 import {
   PageContent,
@@ -12,27 +13,34 @@ import {
 } from '../../constants/Styles';
 import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
 
-const Navbar: React.FC<RouteComponentProps> = ({ history }) => (
-  <StyledNavbar>
-    <TitleText to={HOME_PAGE_ROUTE}>Sync</TitleText>
-    <SearchInput placeholder="Find syncs..." />
-    <Icons>
-      <IconWrapper
-        onClick={() => {}}
-        onMouseDown={(e: any) => e.preventDefault()}
-      >
-        <Edit size={20} />
-      </IconWrapper>
-      <IconWrapper
-        onClick={() => history.push(PROFILE_PAGE_ROUTE)}
-        onMouseDown={(e: any) => e.preventDefault()}
-        last
-      >
-        <User size={20} />
-      </IconWrapper>
-    </Icons>
-  </StyledNavbar>
-);
+const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
+  const [taskModal, setTaskModal] = useState<boolean>(false);
+
+  return (
+    <StyledNavbar>
+      <TitleText to={HOME_PAGE_ROUTE}>Sync</TitleText>
+      <SearchInput placeholder="Find syncs..." />
+      <Icons>
+        <IconWrapper
+          onClick={() => setTaskModal(true)}
+          onMouseDown={(e: any) => e.preventDefault()}
+        >
+          <Edit size={20} />
+        </IconWrapper>
+        <IconWrapper
+          onClick={() => history.push(PROFILE_PAGE_ROUTE)}
+          onMouseDown={(e: any) => e.preventDefault()}
+          last
+        >
+          <User size={20} />
+        </IconWrapper>
+      </Icons>
+      <Modal isOpen={taskModal} toggle={() => setTaskModal(!taskModal)}>
+        Hello
+      </Modal>
+    </StyledNavbar>
+  );
+};
 
 export default withRouter(Navbar);
 

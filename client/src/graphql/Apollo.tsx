@@ -12,7 +12,9 @@ const request = (operation: Operation): void => {
   const token = localStorage.getItem('token');
   operation.setContext({
     headers: {
-      Authorization: token ? `Bearer ${token}` : '',
+      'X-Hasura-Admin-Secret':
+        '1DA7FFC1ADC841B8834CF4F0CAE880282861435A6A9AC63842F482437423C698',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   });
 };
