@@ -44,7 +44,6 @@ const SyncPage: React.FC<any> = ({ theme }) => {
                 text={item}
               />
             ))}
-            <p>Selected: {JSON.stringify(cSelected)}</p>
           </SyncPageCard>
         </Col>
         <Col style={{ padding: '0px 50px' }}>
@@ -81,9 +80,6 @@ const SyncPage: React.FC<any> = ({ theme }) => {
 const SyncPageWrapper = styled.div`
   background: url(${url.resolve(process.env.PUBLIC_URL || '', '/img/bg.jpg')})
     ${({ theme }) => theme.primary} no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
   height: calc(100% - 90px);
   display: flex;

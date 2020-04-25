@@ -1,13 +1,29 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Clock, Lock, Unlock, Users } from 'react-feather';
+import DateTimePicker from 'react-datetime-picker';
 
-import { BorderRadius, Input } from '../../constants/Styles';
+import {
+  BorderRadius,
+  Input,
+  BoxShadow,
+  InterFont,
+} from '../../constants/Styles';
 import Button from '../common/Button';
+import { ThemeInterface } from '../../styled';
 
-const CreateSyncModal: React.FC<any> = ({ theme }) => {
-  const [publicSync, setPublicSync] = useState<boolean>(false);
+interface CreateSyncModalProps {
+  theme: ThemeInterface;
+  closeModal: () => void;
+}
+
+const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
+  theme,
+  closeModal,
+}) => {
   const [title, setTitle] = useState<string>('');
+  const [publicSync, setPublicSync] = useState<boolean>(false);
+  const [deadline, setDeadline] = useState<Date>(new Date());
 
   return (
     <SyncModalWrapper>
@@ -21,29 +37,46 @@ const CreateSyncModal: React.FC<any> = ({ theme }) => {
       />
       <InputWrapper>
         <InputIcon>
-          <Clock color={theme.light1} />
+          <Users color={theme.light4} />
         </InputIcon>
-        <TextInput placeholder="Date" />
-      </InputWrapper>
-      <InputWrapper>
-        <InputIcon>
-          <Users color={theme.light1} />
-        </InputIcon>
+        Invite friends
         <TextInput placeholder="Invite friends" />
       </InputWrapper>
       <InputWrapper>
         <InputIcon>
           {publicSync ? (
-            <Unlock color={theme.light1} />
+            <Unlock color={theme.light4} />
           ) : (
-            <Lock color={theme.light1} />
+            <Lock color={theme.light4} />
           )}
         </InputIcon>
         <TextInput placeholder="Private" />
       </InputWrapper>
+      <InputWrapper>
+        <InputIcon>
+          <Clock color={theme.light4} />
+        </InputIcon>
+        Deadline
+        <StyledDateTimePicker
+          onChange={(date: Date) => setDeadline(date)}
+          value={deadline}
+          disableClock
+          calendarIcon={null}
+          clearIcon={null}
+          maxDetail="minute"
+        />
+      </InputWrapper>
       <ButtonWrapper>
-        <Button margin="0 8px 0 0">Cancel</Button>
-        <Button>Save</Button>
+        <Button margin="0 8px 0 0" onClick={closeModal}>
+          Cancel
+        </Button>
+        <Button
+          onClick={() => {
+            closeModal();
+          }}
+        >
+          Save
+        </Button>
       </ButtonWrapper>
     </SyncModalWrapper>
   );
@@ -77,10 +110,11 @@ const TextInput = styled.input`
 
 const InputWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const InputIcon = styled.div`
-  margin-right: 16px;
+  margin-right: 8px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -88,4 +122,35 @@ const ButtonWrapper = styled.div`
   align-content: flex-end;
   margin-left: auto;
   margin-top: 16px;
+`;
+
+const StyledDateTimePicker = styled(DateTimePicker)`
+  .react-datetime-picker__wrapper {
+    ${Input}
+    padding: 8px 16px;
+    margin-top: 8px;
+  }
+
+  .react-calendar {
+    ${InterFont}
+    ${BorderRadius}
+    ${BoxShadow}
+    border: none;
+
+    .react-calendar__tile {
+      ${BorderRadius}
+    }
+
+    .react-calendar__tile--active {
+      
+    }
+
+    .react-calendar__month-view__days__day--weekend {
+      color: ${({ theme }) => theme.darkRed};
+    }
+
+    .react-calendar__tile--now {
+      background: ${({ theme }) => theme.yellow};
+    }
+  }
 `;

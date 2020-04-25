@@ -88,7 +88,7 @@ export const Input = css`
   ${BorderRadius}
   ${Body}
   background: ${({ theme }) => theme.light1};
-  color: ${({ theme }) => theme.primaryGrey};
+  color: ${({ theme }) => theme.dark1};
   border: none;
   outline: none;
   padding: 4px 8px;

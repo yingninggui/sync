@@ -51,7 +51,7 @@ const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
         toggle={() => setTaskModal(!taskModal)}
         centered
       >
-        <CreateSyncModal />
+        <CreateSyncModal closeModal={() => setTaskModal(false)} />
       </Modal>
     </StyledNavbar>
   );
