@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
+import { Modal } from 'reactstrap';
+import { Plus } from 'react-feather';
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
 import {
@@ -7,9 +9,13 @@ import {
   Heading1,
   Heading3,
   Body,
+  BorderRadius,
 } from '../../../constants/Styles';
 
 const ProfilePage: React.FC<any> = ({ theme }) => {
+  const [addFriendModal, setAddFriendModal] = useState<boolean>(false);
+  const [addCommunityModal, setAddCommunityModal] = useState<boolean>(false);
+
   return (
     <ProfilePageWrapper>
       <UserWrapper>
@@ -26,7 +32,12 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             textColor={theme.white}
             bgColor={theme.primaryGrey}
             dimension={80}
-          />
+            onClick={() => setAddFriendModal(true)}
+          >
+            <Icons>
+              <Plus size={20} />
+            </Icons>
+          </CircleButton>
           <BodyText>+friends</BodyText>
         </ListItemWrapper>
         <ListItemWrapper>
@@ -49,7 +60,12 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             textColor={theme.white}
             bgColor={theme.primaryGrey}
             dimension={80}
-          />
+            onClick={() => setAddCommunityModal(true)}
+          >
+            <Icons>
+              <Plus size={20} />
+            </Icons>
+          </CircleButton>
           <BodyText>+community</BodyText>
         </ListItemWrapper>
         <ListItemWrapper>
@@ -65,6 +81,24 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
           <BodyText>@waterloo</BodyText>
         </ListItemWrapper>
       </ListWrapper>
+      <Modal
+        centered
+        isOpen={addFriendModal}
+        toggle={() => setAddFriendModal(!addFriendModal)}
+      >
+        <ModalStyle>
+          <SearchInput placeholder="Find friends..." />
+        </ModalStyle>
+      </Modal>
+      <Modal
+        centered
+        isOpen={addCommunityModal}
+        toggle={() => setAddCommunityModal(!addCommunityModal)}
+      >
+        <ModalStyle>
+          <SearchInput placeholder="Find communities..." />
+        </ModalStyle>
+      </Modal>
     </ProfilePageWrapper>
   );
 };
@@ -111,4 +145,25 @@ const ListWrapper = styled.div`
   padding: 24px 0;
   display: flex;
   justify-content: left;
+`;
+
+const SearchInput = styled.input`
+  ${BorderRadius}
+  ${Body}
+  padding: 8px 24px;
+  border: none;
+  outline: none;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 24px;
+  background: ${({ theme }) => theme.light1};
+  color: ${({ theme }) => theme.primaryGrey};
+`;
+
+const ModalStyle = styled.div`
+  padding: 24px;
+`;
+
+const Icons = styled.div`
+  display: flex;
 `;
