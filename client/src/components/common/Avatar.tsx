@@ -28,7 +28,7 @@ const AvatarStyle = styled.div<{
   align-items: center;
   color: ${({ theme }) => theme.white};
   font-size: ${({ letterSize }) => letterSize || '30'}px;
-  background: ${({ theme }) => theme.yellow};
+  background: ${({ theme }) => theme.red};
   width: ${({ dimension }) => dimension || '100'}px;
   height: ${({ dimension }) => dimension || '100'}px;
 `;

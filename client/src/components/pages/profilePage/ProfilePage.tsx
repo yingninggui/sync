@@ -15,7 +15,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
         <Avatar dimension={100} letterSize={25} name={'Y'} />
         <UsernameWrapper>
           <TitleText>Username</TitleText>
-          <UsernameBodyText> @therealyg </UsernameBodyText>
+          <UsernameBodyText>@therealyg</UsernameBodyText>
         </UsernameWrapper>
       </UserWrapper>
       <TitleText>Friends</TitleText>
@@ -62,9 +62,10 @@ const BodyText = styled.div`
 
 const ListItemWrapper = styled.div`
   padding: 24px 0;
-  align-items: center;
   display: flex-direction-column;
+  text-align: center;
   justify-content: center;
+  align-items: center;
 `;
 
 const ListWrapper = styled.div`
