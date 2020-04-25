@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { Clock, Lock, Unlock, Users } from 'react-feather';
+import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
 
 import {
@@ -25,7 +25,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
 }) => {
   const [title, setTitle] = useState<string>('');
   const [publicSync, setPublicSync] = useState<number>(1);
-  const [deadline, setDeadline] = useState<Date>(new Date());
+  const [deadline, setDeadline] = useState<Date | null>(null);
 
   return (
     <SyncModalWrapper>
@@ -52,7 +52,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
           value={deadline}
           disableClock
           calendarIcon={null}
-          clearIcon={null}
+          clearIcon={<X size={14} />}
           maxDetail="minute"
         />
       </InputWrapper>
