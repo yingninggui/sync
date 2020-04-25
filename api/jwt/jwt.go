@@ -9,7 +9,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/yingninggui/sync/api/env"
-  "github.com/yingninggui/sync/api/handle"
+	"github.com/yingninggui/sync/api/handle"
 )
 
 type HasuraClaims struct {

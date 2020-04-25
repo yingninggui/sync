@@ -8,25 +8,25 @@ import (
 )
 
 const (
-  //// Common
-  BadRequest = "bad_request"
-  InternalError = "internal_error"
+	//// Common
+	BadRequest    = "bad_request"
+	InternalError = "internal_error"
 	// JWT token is expired
-  ExpiredJwt = "expired_jwt"
+	ExpiredJwt = "expired_jwt"
 
 	//// Registration
 	// Email is already taken by another account
-  EmailTaken = "email_taken"
+	EmailTaken = "email_taken"
 	// Email is too short
-  EmailTooShort = "email_too_short"
+	EmailTooShort = "email_too_short"
 	// Password is too short
-  PasswordTooShort = "password_too_short"
+	PasswordTooShort = "password_too_short"
 
 	//// Login
 	// There is no user with given email
-  EmailNotRegistered = "email_not_registered"
+	EmailNotRegistered = "email_not_registered"
 	// There is a user with given email, but the given password is incorrect
-  EmailWrongPassword = "email_wrong_password"
+	EmailWrongPassword = "email_wrong_password"
 )
 
 type enumError struct {
@@ -43,7 +43,7 @@ func (e enumError) Unwrap() error {
 }
 
 func WithEnum(enum string, err error) error {
-  return enumError{Err: err, Enum: enum}
+	return enumError{Err: err, Enum: enum}
 }
 
 type statusError struct {
@@ -64,7 +64,7 @@ func WithStatus(status int, err error) error {
 }
 
 type errorPayload struct {
-	Message      string `json:"message"`
+	Message string `json:"message"`
 }
 
 func Error(w http.ResponseWriter, r *http.Request, err error) {
@@ -89,7 +89,7 @@ func Error(w http.ResponseWriter, r *http.Request, err error) {
 		}
 	}
 
-  log.Printf("Error: %s", err.Error())
+	log.Printf("Error: %s", err.Error())
 
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(payload)
