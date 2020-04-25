@@ -25,7 +25,7 @@ export default withRouter(Navbar);
 
 const StyledNavbar = styled.nav`
   ${PageContent}
-  padding: 24px;
+  padding: 24px 0;
   display: flex;
   justify-content: space-between;
 `;
