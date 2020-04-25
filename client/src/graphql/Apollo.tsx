@@ -1,4 +1,8 @@
-import ApolloClient, { InMemoryCache, defaultDataIdFromObject, Operation } from 'apollo-boost';
+import ApolloClient, {
+  InMemoryCache,
+  defaultDataIdFromObject,
+  Operation,
+} from 'apollo-boost';
 
 import { GraphQLError } from 'graphql';
 import { GRAPHQL_ENDPOINT } from '../constants/Api';
@@ -16,7 +20,9 @@ const request = (operation: Operation): void => {
 const onError = ({ graphQLErrors, networkError }: any): void => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }: GraphQLError) => {
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      );
       // handle JWT error from Hasura
       if (message.includes('JWT')) {
         logOut();

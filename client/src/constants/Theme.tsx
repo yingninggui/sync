@@ -15,7 +15,7 @@ export default {
   dark2: '#505f79',
   dark3: '#97a0af',
   light1: '#f4f4f4',
-  light2: '#eef1f1',
+  light2: '#f1f1f1',
   light3: '#e1e1e1',
   light4: '#c6c6c6',
 

@@ -21,12 +21,12 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    "max-len": [0, 80, 2],
     'no-console': 'off',
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
     'react/prefer-default-export': 'off',
     'react/prop-types': 'off',
-    
   },
   settings: {
     react: {

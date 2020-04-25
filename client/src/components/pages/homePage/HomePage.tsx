@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 
-import Button from '../common/Button';
-import { PageContent } from '../../constants/Styles';
+import Button from '../../common/Button';
+import { PageContent } from '../../../constants/Styles';
 
 const HomePage: React.FC<any> = ({ theme }) => {
   const [publicFeed, setPublicFeed] = useState<boolean>(true);
@@ -34,4 +34,5 @@ export default withTheme(HomePage);
 
 const HomePageWrapper = styled.div`
   ${PageContent}
+  padding-top: 16px;
 `;

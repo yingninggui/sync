@@ -3,7 +3,13 @@ import styled from 'styled-components';
 import { User, Edit } from 'react-feather';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 
-import { PageContent, Heading1, DarkHover, BorderRadius, Body } from '../../constants/Styles';
+import {
+  PageContent,
+  Heading1,
+  DarkHover,
+  BorderRadius,
+  Body,
+} from '../../constants/Styles';
 import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
 
 const Navbar: React.FC<RouteComponentProps> = ({ history }) => (
@@ -11,10 +17,17 @@ const Navbar: React.FC<RouteComponentProps> = ({ history }) => (
     <TitleText to={HOME_PAGE_ROUTE}>Sync</TitleText>
     <SearchInput placeholder="Find syncs..." />
     <Icons>
-      <IconWrapper onClick={() => {}} onMouseDown={(e: any) => e.preventDefault()}>
+      <IconWrapper
+        onClick={() => {}}
+        onMouseDown={(e: any) => e.preventDefault()}
+      >
         <Edit size={20} />
       </IconWrapper>
-      <IconWrapper onClick={() => history.push(PROFILE_PAGE_ROUTE)} onMouseDown={(e: any) => e.preventDefault()} last>
+      <IconWrapper
+        onClick={() => history.push(PROFILE_PAGE_ROUTE)}
+        onMouseDown={(e: any) => e.preventDefault()}
+        last
+      >
         <User size={20} />
       </IconWrapper>
     </Icons>

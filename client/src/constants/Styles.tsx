@@ -3,12 +3,14 @@ import { css, keyframes } from 'styled-components';
 export const PAGE_CONTENT_WIDTH = 800;
 
 export const InterFont = css`
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 `;
 
 export const BoxShadow = css`
-  box-shadow: 0px 2px 4px rgba(236, 237, 237, 0.4), 0px 0px 4px rgba(142, 147, 148, 0.2);
+  box-shadow: 0px 2px 4px rgba(236, 237, 237, 0.4),
+    0px 0px 4px rgba(142, 147, 148, 0.2);
 `;
 
 export const BorderRadius = css`

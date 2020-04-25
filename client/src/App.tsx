@@ -1,16 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { HOME_PAGE_ROUTE, PROFILE_PAGE_ROUTE, SYNC_PAGE_ROUTE, LOGIN_PAGE_ROUTE } from './constants/Routes';
+import {
+  HOME_PAGE_ROUTE,
+  PROFILE_PAGE_ROUTE,
+  SYNC_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE,
+} from './constants/Routes';
 
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/navigation/Footer';
 
 // TODO: Lazy load page components
-import HomePage from './components/pages/HomePage';
-import ProfilePage from './components/pages/ProfilePage';
-import SyncPage from './components/pages/SyncPage';
-import LoginPage from './components/pages/LoginPage';
+import HomePage from './components/pages/homePage/HomePage';
+import ProfilePage from './components/pages/profilePage/ProfilePage';
+import SyncPage from './components/pages/syncPage/SyncPage';
+import LoginPage from './components/pages/loginPage/LoginPage';
 
 const App: React.FC = () => (
   <Router>

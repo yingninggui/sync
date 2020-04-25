@@ -33,7 +33,12 @@ const Button: React.FC<ButtonProps> = ({
 
 export default Button;
 
-const StyledButton = styled.button<{ margin?: string; textColor?: string; bgColor?: string; fontWeight?: number }>`
+const StyledButton = styled.button<{
+  margin?: string;
+  textColor?: string;
+  bgColor?: string;
+  fontWeight?: number;
+}>`
   ${BorderRadius}
   ${Body}
   ${DarkHover()}
