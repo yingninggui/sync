@@ -19,9 +19,9 @@ services:
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:$POSTGRES_PASSWORD@postgres:5432/postgres
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "${HASURA_GRAPHQL_JWT_KEY}"}'
-    expose:
-      - 8080
-    image: hasura/graphql-engine:v1.2.0-beta.4.cli-migrations-v2
+    image: hasura/graphql-engine:v1.2.0-beta.5.cli-migrations-v2
+    ports:
+      - 8080:8080
     restart: always
     volumes:
       - ./hasura/migrations:/hasura-migrations
