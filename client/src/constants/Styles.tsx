@@ -77,6 +77,16 @@ export const Card = css`
   ${BorderRadius}
 `;
 
+export const Input = css`
+  ${BorderRadius}
+  ${Body}
+  background: ${({ theme }) => theme.light1};
+  color: ${({ theme }) => theme.primaryGrey};
+  border: none;
+  outline: none;
+  padding: 4px 8px;
+`;
+
 export const FadeInAnimation = keyframes`
   0% {
     display: none;

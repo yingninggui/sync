@@ -8,8 +8,7 @@ import {
   PageContent,
   Heading1,
   DarkHover,
-  BorderRadius,
-  Body,
+  Input,
 } from '../../constants/Styles';
 import {
   PROFILE_PAGE_ROUTE,
@@ -17,13 +16,14 @@ import {
   LOGIN_PAGE_ROUTE,
 } from '../../constants/Routes';
 import { isLoggedIn } from '../../utils/Auth';
+import CreateSyncModal from './CreateSyncModal';
 
 const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
   const [taskModal, setTaskModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      history.push(LOGIN_PAGE_ROUTE);
+      // history.push(LOGIN_PAGE_ROUTE);
     }
   }, [history]);
 
@@ -46,8 +46,12 @@ const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
           <User size={20} />
         </IconWrapper>
       </Icons>
-      <Modal isOpen={taskModal} toggle={() => setTaskModal(!taskModal)}>
-        Hello
+      <Modal
+        isOpen={taskModal}
+        toggle={() => setTaskModal(!taskModal)}
+        centered
+      >
+        <CreateSyncModal />
       </Modal>
     </StyledNavbar>
   );
@@ -75,16 +79,11 @@ const TitleText = styled(Link)`
 `;
 
 const SearchInput = styled.input`
-  ${BorderRadius}
-  ${Body}
+  ${Input}
   padding: 8px 24px;
-  border: none;
-  outline: none;
   width: 100%;
   max-width: 400px;
   margin: 0 24px;
-  background: ${({ theme }) => theme.light1};
-  color: ${({ theme }) => theme.primaryGrey};
 `;
 
 const Icons = styled.div`

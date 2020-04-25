@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Card, Link, Body } from '../../../constants/Styles';
+import { Card, Link, Body, Input } from '../../../constants/Styles';
 import Button from '../../common/Button';
 import { LogIn } from '../../../graphql/Schema';
 import { logIn, isLoggedIn } from '../../../utils/Auth';
@@ -169,11 +169,8 @@ const InputWrapper = styled.div`
 `;
 
 const TextInput = styled.input`
-  background: ${({ theme }) => theme.light1};
+  ${Input}
   margin-left: 16px;
-  border: none;
-  outline: none;
-  padding: 4px 8px;
 `;
 
 const ButtonWrapper = styled.div`
