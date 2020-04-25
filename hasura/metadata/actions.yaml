@@ -1,0 +1,15 @@
+actions:
+- name: register_user
+  definition:
+    kind: synchronous
+    handler: http://api:8000/register
+  permissions:
+  - role: anonymous
+  - role: user
+custom_types:
+  enums: []
+  input_objects:
+  - name: RegisterCredentials
+  objects:
+  - name: RegisterResult
+  scalars: []

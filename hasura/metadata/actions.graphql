@@ -1,0 +1,19 @@
+type Mutation {
+  register_user (
+    credentials: RegisterCredentials!
+  ): RegisterResult!
+}
+
+
+
+
+input RegisterCredentials {
+  email : String!
+  password : String!
+  username : String!
+}
+
+type RegisterResult {
+  access_token : String!
+}
+
