@@ -12,7 +12,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
   return (
     <ProfilePageWrapper>
       <UserWrapper>
-        <Avatar bgColor={theme.red} width={100} height={100} />
+        <Avatar dimension={100} letterSize={25} name={'Y'} />
         <UsernameWrapper>
           <TitleText>Username</TitleText>
           <UsernameBodyText> @therealyg </UsernameBodyText>
@@ -21,18 +21,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
       <TitleText>Friends</TitleText>
       <ListWrapper>
         <ListItemWrapper>
-          <Avatar
-            bgColor={theme.yellow}
-            width={100}
-            height={100}
-            letterSize={25}
-            firstLetter={'Y'}
-          />
-
-          <BodyText>@therealyg</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar bgColor={theme.yellow} width={100} height={100} />
+          <Avatar dimension={100} letterSize={25} name={'Y'} />
           <BodyText>@therealyg</BodyText>
         </ListItemWrapper>
       </ListWrapper>
