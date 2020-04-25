@@ -1,6 +1,5 @@
 CREATE TABLE "user" (
-  id INT PRIMARY KEY
-    GENERATED ALWAYS AS IDENTITY,
+  id SERIAL PRIMARY KEY,
   username TEXT NOT NULL
     CONSTRAINT username_length CHECK (LENGTH(username) <= 256),
   email TEXT NOT NULL
@@ -29,8 +28,7 @@ SELECT uf.from_id as user_id, u.*
     ON uf.to_id = u.id;
 
 CREATE TABLE community (
-  id INT PRIMARY KEY
-    GENERATED ALWAYS AS IDENTITY,
+  id SERIAL PRIMARY KEY,
   name TEXT NOT NULL
     CONSTRAINT name_length CHECK (LENGTH(name) <= 256)
 );
@@ -75,8 +73,7 @@ SELECT cc.community_id, c.*
     ON cc.child_id = c.id;
 
 CREATE TABLE sync (
-  id INT PRIMARY KEY
-    GENERATED ALWAYS AS IDENTITY,
+  id SERIAL PRIMARY KEY,
   name TEXT
     CONSTRAINT name_length CHECK (LENGTH(name) <= 256),
   description TEXT
@@ -119,8 +116,7 @@ SELECT siu.user_id, s.*
     ON siu.sync_id = s.id;
 
 CREATE TABLE checkpoint (
-  id INT PRIMARY KEY
-    GENERATED ALWAYS AS IDENTITY,
+  id SERIAL PRIMARY KEY,
   sync_id INT NOT NULL
     REFERENCES sync(id)
     ON DELETE CASCADE
