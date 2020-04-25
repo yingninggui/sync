@@ -10,11 +10,7 @@ import {
   DarkHover,
   Input,
 } from '../../constants/Styles';
-import {
-  PROFILE_PAGE_ROUTE,
-  HOME_PAGE_ROUTE,
-  LOGIN_PAGE_ROUTE,
-} from '../../constants/Routes';
+import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
 import { isLoggedIn } from '../../utils/Auth';
 import CreateSyncModal from './CreateSyncModal';
 
@@ -70,7 +66,7 @@ const TitleText = styled(Link)`
   ${Heading1}
   color: ${({ theme }) => theme.primary};
   text-decoration: none;
-  
+
   &:hover {
     color: ${({ theme }) => theme.primary};
     text-decoration: none;
