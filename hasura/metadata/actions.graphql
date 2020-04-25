@@ -1,10 +1,14 @@
+type Query {
+  login_user (
+    credentials: LoginCredentials!
+  ): LoginResponse!
+}
+
 type Mutation {
   register_user (
     credentials: RegisterCredentials!
-  ): RegisterResult!
+  ): RegisterResponse!
 }
-
-
 
 
 input RegisterCredentials {
@@ -13,7 +17,17 @@ input RegisterCredentials {
   username : String!
 }
 
-type RegisterResult {
-  access_token : String!
+input LoginCredentials {
+  email : String!
+  password : String!
 }
 
+type RegisterResponse {
+  access_token : String!
+  user_id : Int!
+}
+
+type LoginResponse {
+  access_token : String!
+  user_id : Int!
+}

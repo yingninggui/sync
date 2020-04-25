@@ -1,4 +1,11 @@
 actions:
+- name: login_user
+  definition:
+    kind: ""
+    handler: http://localhost:8000/login
+  permissions:
+  - role: anonymous
+  - role: user
 - name: register_user
   definition:
     kind: synchronous
@@ -10,6 +17,8 @@ custom_types:
   enums: []
   input_objects:
   - name: RegisterCredentials
+  - name: LoginCredentials
   objects:
-  - name: RegisterResult
+  - name: LoginResponse
+  - name: RegisterResponse
   scalars: []
