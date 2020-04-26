@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import url from 'url';
 import gql from 'graphql-tag';
+import _ from 'lodash';
 
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
@@ -16,7 +17,7 @@ import { SyncFragment } from '../../../graphql/Fragments';
 
 const GET_SYNC_DETAILS = gql`
   query getSyncDetails($id: Int!) {
-    sync_by_pk(id: $id) {
+    sync(where: { id: { _eq: $id } }) {
       ...SyncInfo
       ...SyncUsers
       ...SyncCheckpoints
@@ -28,14 +29,20 @@ const GET_SYNC_DETAILS = gql`
 `;
 
 const SyncPage: React.FC<any> = ({ theme, match }) => {
-  const users: Array<User> = [];
-  const checkpoints: Array<Checkpoint> = [];
   const syncID = parseInt(match.params.syncID, 10);
-  const { loading, error, data } = useQuery<{ sync: Sync }>(GET_SYNC_DETAILS, {
-    variables: { id: syncID },
-  });
+  const { loading, error, data } = useQuery<{ sync: Sync[] }>(
+    GET_SYNC_DETAILS,
+    {
+      variables: { id: syncID },
+    },
+  );
 
   console.log(loading, error, data);
+  if (data && data.sync.length < 1) {
+    throw new Error('No sync with this ID found');
+  }
+  const users: Array<User> = _.get(data, 'sync[0].invited_users', []);
+  const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
 
   const [cSelected, setCSelected] = useState<Array<any>>([]);
   const onCheckboxBtnClick = (selected: any) => {
@@ -55,22 +62,25 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
       <Row>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
-            <h3>Checkpoints</h3>
+            <h3 style={{ textAlign: 'center' }}>Checkpoints</h3>
             {checkpoints.map(({ id: checkpointId, name }) => (
               <Checkbox
                 key={checkpointId}
                 onClick={() => onCheckboxBtnClick(checkpointId)}
                 active={cSelected.includes(checkpointId)}
                 text={name}
+                fontSize={18}
               />
             ))}
           </SyncPageCard>
         </Col>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
-            <h3>People who have finished:</h3>
+            <h3 style={{ textAlign: 'center' }}>People who have finished:</h3>
 
-            <h3>People who are still working:</h3>
+            <h3 style={{ textAlign: 'center' }}>
+              People who are still working:
+            </h3>
           </SyncPageCard>
         </Col>
       </Row>
@@ -115,7 +125,7 @@ const SyncPageCard = styled.div`
     min-width: 300px;
     height: 100%;
     width: 30vw;
-    padding: 50px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;

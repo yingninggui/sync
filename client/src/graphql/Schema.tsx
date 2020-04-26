@@ -27,6 +27,7 @@ export interface Sync {
   owner: User;
   invited_users: User[];
   deadline?: string;
+  checkpoints?: Checkpoint[];
 }
 
 export interface User {
