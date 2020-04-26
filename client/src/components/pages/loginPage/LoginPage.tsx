@@ -91,7 +91,10 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
       <TitleWrapper>
         <Title>Let&apos;s Sync </Title>
         <SubTitle>
-          Just as if we were working beside each other in the library.
+          Just as if we were working beside each other in the library.{' '}
+          <span role="img" aria-label="book">
+            📚
+          </span>
         </SubTitle>
       </TitleWrapper>
       <LoginForm
@@ -170,6 +173,13 @@ const LoginPageWrapper = styled.div`
   background: ${({ theme }) => `linear-gradient(${'#3EADCF'}, ${'#ABE9CD'})`};
   display: flex;
   align-items: center;
+  padding: 32px 64px;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.mobileLarge}px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
 const LoginForm = styled.form`
@@ -177,8 +187,14 @@ const LoginForm = styled.form`
   margin: auto;
   background: ${({ theme }) => theme.white};
   padding: 24px;
-  width: 400px;
+  width: 360px;
   text-align: right;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.mobileLarge}px) {
+    margin-top: 24px;
+    margin-bottom: 48px;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -228,6 +244,12 @@ const SubTitle = styled.div`
 
 const TitleWrapper = styled.div`
   padding: 24px 0;
-  display: flex-column;
-  margin-left: 160px;
+  display: flex;
+  flex-direction: column;
+  max-width: 40%;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.mobileLarge}px) {
+    max-width: 100%;
+  }
 `;
