@@ -41,3 +41,17 @@ WHERE u.username != 'dmytro' AND c.id != 1 AND c.id != 9;
 -- let's say only yayimahuman and yg are in FINE130
 INSERT INTO community_user(community_id, user_id)
 VALUES (9, 1), (9, 4);
+
+INSERT INTO sync(name, description, cover_photo_url, deadline, community_id, owner_id, public)
+VALUES ('CS 341 Assignment 2', 'Everyone welcome to join', '/img/7.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, TRUE),
+       ('HackNow Online Hackathon', 'Let ''s make a website called Let''sSync', '/img/3.jpg', CURRENT_TIMESTAMP + '1 hour', 1, 2, FALSE);
+
+INSERT INTO sync_invited_user(sync_id, user_id)
+VALUES (2, 1), (2, 2), (2, 3), (2, 4);
+
+INSERT INTO sync_invited_user(sync_id, user_id)
+SELECT 1, u.id FROM "user" u;
+
+INSERT INTO checkpoint(sync_id, name)
+VALUES (1, 'Question 1'), (1, 'Question 2A'), (1, 'Question 2B'), (1, 'Question 3'),
+       (2, 'Mock-ups'), (2, 'Database schema'), (2, 'Frontend skeleton');
