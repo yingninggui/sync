@@ -3,8 +3,6 @@ import styled, { withTheme } from 'styled-components';
 import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
 import gql from 'graphql-tag';
-import Unsplash, { toJson } from 'unsplash-js';
-
 import { useMutation } from '@apollo/react-hooks';
 import {
   BorderRadius,
@@ -19,28 +17,6 @@ import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
 import { Sync } from '../../graphql/Schema';
 
-const unsplash = new Unsplash({
-  accessKey: 'YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40',
-});
-
-function getPhoto(title: string): string {
-  unsplash.photos
-    .getRandomPhoto({ query: title })
-    .then(toJson)
-    .then((json) => {
-      console.log(json.links.html);
-      return json;
-    });
-  return 'https://images.unsplash.com/photo-1517848568502-d03fa74e1964?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80';
-}
-
-function getPhotoHelper(url: string) {
-  fetch(url).then((response) => {
-    console.log('hi');
-    console.log(response.url);
-    return response.url;
-  });
-}
 const INSERT_SYNC = gql`
   mutation insertSync(
     $name: String!
@@ -89,9 +65,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
 
   return (
     <SyncModalWrapper>
-      <View>
-        <CoverPhoto />
-      </View>
+      <CoverPhoto />
       <TextInput
         placeholder="Name"
         value={name}
@@ -99,13 +73,6 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
           setName(e.target.value);
         }}
       />
-      <View>
-        <CoverPhoto
-          image={
-            'https://images.unsplash.com/photo-1517848568502-d03fa74e1964?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80'
-          }
-        />
-      </View>
       <InputWrapper>
         <InputIcon>
           <Users color={theme.light4} />
@@ -173,16 +140,13 @@ const SyncModalWrapper = styled.div`
   position: relative;
 `;
 
-const CoverPhoto = styled.div<{
-  image?: string;
-}>`
+const CoverPhoto = styled.div`
   ${BorderRadius}
   height: 120px;
-  background: url('${({ image }) => image || '/img/bg.jpg'}');
+  background: url('/img/${Math.floor(Math.random() * 10 + 1)}.jpg');
   background-size: cover;
   background-position: center;
   margin-bottom: 8px;
-  position: absolute;
 `;
 
 const TextInput = styled.input`
@@ -248,8 +212,4 @@ const StyledDateTimePicker = styled(DateTimePicker)`
       ${DarkHover()}
     }
   }
-`;
-
-const View = styled.div`
-  position: relative;
 `;
