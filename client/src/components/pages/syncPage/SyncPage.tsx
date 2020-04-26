@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { PhoneMissed, MicOff, Plus } from 'react-feather';
+import { PhoneMissed, MicOff, Plus, X } from 'react-feather';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import { withRouter } from 'react-router-dom';
@@ -17,6 +17,7 @@ import {
   Card,
   GreenIcon,
   Input,
+  DarkHover,
 } from '../../../constants/Styles';
 
 import { User, Checkpoint, Sync } from '../../../graphql/Schema';
@@ -61,9 +62,9 @@ const INSERT_CHECKPOINT = gql`
 
 const DELETE_CHECKPOINT = gql`
   mutation deleteCheckpoint($checkpointId: Int!) {
-    delete_checkpoint(where: { checkpoint_id: { _eq: $checkpointId } }) {
+    delete_checkpoint(where: { id: { _eq: $checkpointId } }) {
       returning {
-        checkpoint_id
+        id
       }
     }
   }
@@ -191,6 +192,9 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
             <form
               onSubmit={(e: any) => {
                 e.preventDefault();
+                if (checkpointInput === '') {
+                  return;
+                }
                 insertCheckpointMutation({
                   variables: { name: checkpointInput, sync_id: syncID },
                 });
@@ -212,12 +216,23 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
               </Row>
             </form>
             {checkpoints.map(({ id: checkpointId, name }) => (
-              <Checkbox
+              <Row
+                style={{ justifyContent: 'space-between' }}
                 key={checkpointId}
-                onClick={() => onCheckboxBtnClick(checkpointId)}
-                active={cSelected.includes(checkpointId)}
-                text={name}
-              />
+              >
+                <Checkbox
+                  onClick={() => onCheckboxBtnClick(checkpointId)}
+                  active={cSelected.includes(checkpointId)}
+                  text={name}
+                />
+                <XButton
+                  onClick={() =>
+                    deleteCheckpointMutation({ variables: { checkpointId } })
+                  }
+                >
+                  <X />
+                </XButton>
+              </Row>
             ))}
           </SyncPageCard>
         </Col>
@@ -306,6 +321,14 @@ const AvatarWrapper = styled.div<{
 
 const IconWrapper = styled.button`
   ${GreenIcon}
+`;
+
+const XButton = styled.button`
+  outline: none;
+  border: none;
+  background: none;
+  ${DarkHover()}
+  color: ${({ theme }) => theme.error};
 `;
 
 const BoxHeading = styled.div`
