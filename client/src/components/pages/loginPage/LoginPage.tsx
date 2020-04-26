@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Row } from 'reactstrap';
 
 import {
   Card,
@@ -103,6 +104,23 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
           performLogin();
         }}
       >
+        <Row style={{ justifyContent: 'center' }}>
+          <Button
+            bgColor={'#3EADCF'}
+            textColor={'#ffffff'}
+            onClick={() =>
+              logInMutation({
+                variables: {
+                  email: 'yayimahuman@gmail.com',
+                  password: 'password',
+                },
+              })
+            }
+          >
+            For a demo user, click here
+          </Button>
+        </Row>
+        <hr />
         {error && <ErrorText>{error}</ErrorText>}
         <InputWrapper>
           Student Email
@@ -137,7 +155,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
         </InputWrapper>
         {!isLogin && (
           <InputWrapper>
-            Confirm Password
+            Confirm
             <TextInput
               type="password"
               value={confirmPassword}
