@@ -4,7 +4,15 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Card, Link, Body, Input } from '../../../constants/Styles';
+import {
+  Card,
+  Link,
+  PageContent,
+  Heading1,
+  Heading2,
+  Body,
+  Input,
+} from '../../../constants/Styles';
 import Button from '../../common/Button';
 import { LogInResponse } from '../../../graphql/Schema';
 import { logIn, isLoggedIn } from '../../../utils/Auth';
@@ -31,7 +39,7 @@ const LOG_IN = gql`
 `;
 
 const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const [error, setError] = useState<string>('');
   const [username, setUsername] = useState<string>('');
@@ -77,6 +85,12 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <LoginPageWrapper>
+      <TitleWrapper>
+        <Title>Let`s Sync </Title>
+        <SubTitle>
+          Just as if we were working beside each other in the library.
+        </SubTitle>
+      </TitleWrapper>
       <LoginForm
         onSubmit={(e: any) => {
           e.preventDefault();
@@ -85,7 +99,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
       >
         {error && <ErrorText>{error}</ErrorText>}
         <InputWrapper>
-          School Email
+          Student Email
           <TextInput
             type="email"
             value={email}
@@ -131,7 +145,12 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
           <LoginLink onClick={() => setIsLogin(!isLogin)}>
             {isLogin ? 'Sign Up' : 'Log In'}
           </LoginLink>
-          <Button onClick={performLogin} type="submit">
+          <Button
+            bgColor={'#3EADCF'}
+            textColor={'#ffffff'}
+            onClick={performLogin}
+            type="submit"
+          >
             Get Started
           </Button>
         </ButtonWrapper>
@@ -145,8 +164,7 @@ export default withRouter(LoginPage);
 const LoginPageWrapper = styled.div`
   height: 100vh;
   width: 100vw;
-  background: ${({ theme }) =>
-    `linear-gradient(${theme.yellow}, ${theme.primary})`};
+  background: ${({ theme }) => `linear-gradient(${'#3EADCF'}, ${'#ABE9CD'})`};
   display: flex;
   align-items: center;
 `;
@@ -165,7 +183,7 @@ const InputWrapper = styled.div`
   margin: 8px auto;
   justify-content: space-between;
   align-items: center;
-  font-weight: 700;
+  font-weight: 500;
   width: 100%;
 `;
 
@@ -190,4 +208,23 @@ const LoginLink = styled.div`
 const ErrorText = styled.div`
   ${Body}
   color: ${({ theme }) => theme.darkRed};
+`;
+
+const Title = styled.div`
+  ${Heading1}
+  font-size: 40px;
+  color: #ffffff;
+`;
+
+const SubTitle = styled.div`
+  ${Heading2}
+  font-size: 24px;
+  font-weight: 500;
+  color: #ffffff;
+`;
+
+const TitleWrapper = styled.div`
+  padding: 24px 0;
+  display: flex-column;
+  margin-left: 160px;
 `;
