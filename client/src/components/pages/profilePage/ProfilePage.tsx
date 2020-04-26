@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Modal } from 'reactstrap';
+import { useQuery } from '@apollo/react-hooks';
 import { Plus } from 'react-feather';
+import gql from 'graphql-tag';
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
+import { User } from '../../../graphql/Schema';
 import {
   PageContent,
   Heading1,
@@ -12,10 +15,20 @@ import {
   BorderRadius,
 } from '../../../constants/Styles';
 
+const GET_FRIENDS = gql`
+  query getFriends($user_id: Int!) {
+    user_by_pk(id: $user_id) {
+      friends {
+        username
+      }
+    }
+  }
+`;
+
 const ProfilePage: React.FC<any> = ({ theme }) => {
   const [addFriendModal, setAddFriendModal] = useState<boolean>(false);
   const [addCommunityModal, setAddCommunityModal] = useState<boolean>(false);
-
+  const { data } = useQuery<{ user_friends: { friends: User[] } }>(GET_FRIENDS);
   return (
     <ProfilePageWrapper>
       <UserWrapper>
@@ -39,18 +52,6 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             </Icons>
           </CircleButton>
           <BodyText>+friends</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'therealyg'} />
-          <BodyText>@therealyg</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'yayimahuman'} />
-          <BodyText>@yayhuman</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'ez'} />
-          <BodyText>@ez</BodyText>
         </ListItemWrapper>
       </ListWrapper>
       <TitleText>Communities</TitleText>
