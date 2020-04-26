@@ -79,8 +79,7 @@ CREATE TABLE sync (
   description TEXT
     CONSTRAINT description_lengtht CHECK (LENGTH(description) <= 4096),
   cover_photo_url TEXT
-    CONSTRAINT url_length CHECK (LENGTH(cover_photo_url) <= 1024)
-    CONSTRAINT url_valid CHECK (cover_photo_url ~* '^https?://[^\s/$.?#].[^\s]*$'),
+    CONSTRAINT url_length CHECK (LENGTH(cover_photo_url) <= 1024),
   deadline TIMESTAMPTZ,
   community_id INT NOT NULL
     REFERENCES community(id)
