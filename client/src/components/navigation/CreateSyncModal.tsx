@@ -20,7 +20,7 @@ import { SyncFragment } from '../../graphql/Fragments';
 import { Sync } from '../../graphql/Schema';
 
 const unsplash = new Unsplash({
-  accessKey: '{YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40}',
+  accessKey: 'YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40',
 });
 
 function getPhoto(title: string) {
