@@ -87,7 +87,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <LoginPageWrapper>
       <TitleWrapper>
-        <Title>Let`s Sync </Title>
+        <Title>Let's Sync </Title>
         <SubTitle>
           Just as if we were working beside each other in the library.
         </SubTitle>
