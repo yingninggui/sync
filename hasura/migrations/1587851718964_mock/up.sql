@@ -43,20 +43,27 @@ INSERT INTO community_user(community_id, user_id)
 VALUES (9, 1), (9, 4);
 
 INSERT INTO sync(name, description, cover_photo_url, deadline, community_id, owner_id, public)
-VALUES ('HackNow Online Hackathon', 'Let ''s make a website called Let''sSync', '/img/8.jpg', CURRENT_TIMESTAMP + '8 hour', 1, 2, TRUE),
-       ('CS 341 Assignment 2', 'Everyone welcome to join', '/img/1.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, FALSE),
-       ('CS 350 Final Exam Preparation', 'Yay operating systems', '/img/2.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE);
+VALUES ('HackNow Online Hackathon', '', '/img/8.jpg', CURRENT_TIMESTAMP + '8 hour', 1, 2, TRUE)
+       ('CS 341 Assignment 2', '', '/img/1.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, FALSE),
+       ('CS 350 Final Exam Preparation', '', '/img/2.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE),
+       ('CS 488 Final Project', '', '/img/6.jpg', CURRENT_TIMESTAMP + '2 day', 1, 1, FALSE),
+       ('Finish Resumes', '', '/img/7.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE),
+       ('Berkeley Protest Planning Against Ben Shapiro', '', '/img/4.jpg', CURRENT_TIMESTAMP + '3 day', 1, 1, TRUE);
 
 INSERT INTO sync_invited_user(sync_id, user_id)
 SELECT 1, u.id FROM "user" u;
 
 INSERT INTO sync_invited_user(sync_id, user_id)
-VALUES (2, 1), (2, 2), (2, 3), (2, 4);
-
-INSERT INTO sync_invited_user(sync_id, user_id)
-VALUES (3, 2), (3, 4), (3, 5), (3, 7);
+VALUES (2, 1), (2, 2), (2, 3), (2, 4),
+       (3, 2), (3, 4), (3, 5), (3, 7),
+       (4, 1), (4, 4), (4, 5), (4, 7),
+       (5, 4), (5, 6), (5, 7),
+       (6, 1), (6, 2);
 
 INSERT INTO checkpoint(sync_id, name)
 VALUES (1, 'Mock-ups'), (1, 'Database schema'), (1, 'Frontend skeleton'),
        (2, 'Question 1'), (2, 'Question 2A'), (2, 'Question 2B'), (2, 'Question 3'),
-       (3, 'Filesystems'), (3, 'Synchronization'), (3, 'Scheduling'), (3, 'Virtual Memory');
+       (3, 'Filesystems'), (3, 'Synchronization'), (3, 'Scheduling'), (3, 'Virtual Memory'),
+       (4, 'Raytracer'), (4, 'Demo Video'), (4, 'Project Report'),
+       (5, 'Experience section'), (5, 'Education section'),
+       (6, 'Make posters'), (6, 'Make signs'), (6, 'Tweet'), (6, 'Protest');

@@ -155,7 +155,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
         </InputWrapper>
         {!isLogin && (
           <InputWrapper>
-            Confirm
+            Confirm Password
             <TextInput
               type="password"
               value={confirmPassword}
@@ -205,7 +205,7 @@ const LoginForm = styled.form`
   margin: auto;
   background: ${({ theme }) => theme.white};
   padding: 24px;
-  width: 360px;
+  width: 380px;
   text-align: right;
 
   @media only screen and (max-width: ${({ theme }) =>
