@@ -58,7 +58,9 @@ const AvatarStyle = styled.div<{
   color: ${({ theme }) => theme.white};
   font-size: ${({ letterSize }) => letterSize || '30'}px;
   background: ${({ theme }) => theme.red};
-  width: ${({ dimension }) => dimension || '100'}px;
   background-image: linear-gradient(${({ bg }) => `${bg[0]}, ${bg[1]}`});
+  width: ${({ dimension }) => dimension || '100'}px;
   height: ${({ dimension }) => dimension || '100'}px;
+  min-width: ${({ dimension }) => dimension || '100'}px;
+  min-height: ${({ dimension }) => dimension || '100'}px;
 `;

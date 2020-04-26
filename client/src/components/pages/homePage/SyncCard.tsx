@@ -16,22 +16,37 @@ interface SyncCardProps {
   sync: Sync;
 }
 
-const SyncCard: React.FC<SyncCardProps> = ({ sync }) => (
-  <SyncCardWrapper>
-    <SyncCardBackground src={sync.cover_photo_url || '/img/bg.jpg'} />
-    <Content>
-      <Name>{sync.name}</Name>
-      <Link to={getSyncPageRoute(sync.id)}>
-        <Button>Join</Button>
-      </Link>
-    </Content>
-    <Content>
-      <Invited>
-        Invited: {sync.invited_users.map((u) => `@${u.username}`).join(',')}
-      </Invited>
-    </Content>
-  </SyncCardWrapper>
-);
+const SyncCard: React.FC<SyncCardProps> = ({ sync }) => {
+  let timeString = '';
+  if (sync.deadline) {
+    const date = new Date(sync.deadline);
+    const hourString = date.toLocaleTimeString(undefined, {
+      hour12: true,
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+    timeString = `${date.toDateString()} ${hourString}`;
+  }
+
+  return (
+    <SyncCardWrapper>
+      <SyncCardBackground src={sync.cover_photo_url || '/img/bg.jpg'} />
+      <Content>
+        <Name>{sync.name}</Name>
+
+        <Link to={getSyncPageRoute(sync.id)}>
+          <Button>Join</Button>
+        </Link>
+      </Content>
+      <Content>
+        <GreyText>
+          Invited: {sync.invited_users.map((u) => `@${u.username}`).join(',')}
+        </GreyText>
+        <GreyText>{timeString && `Deadline: ${timeString}`}</GreyText>
+      </Content>
+    </SyncCardWrapper>
+  );
+};
 
 export default SyncCard;
 
@@ -67,7 +82,7 @@ const Name = styled.div`
   color: ${({ theme }) => theme.primaryGrey};
 `;
 
-const Invited = styled.div`
+const GreyText = styled.div`
   ${Body}
   color: ${({ theme }) => theme.dark3};
 `;

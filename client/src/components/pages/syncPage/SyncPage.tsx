@@ -244,7 +244,7 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
                 🎉
               </span>
             </BoxHeading>
-            <Row style={{ marginBottom: '20px' }}>
+            <Row style={{ marginBottom: '20px', flexWrap: 'wrap' }}>
               {usersDoneAll.length === 0 &&
                 'No one yet, be the first one here!'}
               {usersDoneAll.map(AvatarMini)}
@@ -255,7 +255,7 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
                 👨‍💻
               </span>
             </BoxHeading>
-            <Row>
+            <Row style={{ flexWrap: 'wrap' }}>
               {stillWorking.length === 0 && "Everyone's all done!"}
               {stillWorking.map(AvatarMini)}
             </Row>
@@ -305,7 +305,7 @@ const SyncPageCard = styled.div`
   ${Card}
   background-color: rgba(255, 255, 255, 0.95);
   min-width: 300px;
-  height: 100%;
+  height: max-content;
   width: 400px;
   max-width: 30vw;
   padding: 24px;
@@ -316,7 +316,7 @@ const SyncPageCard = styled.div`
 const AvatarWrapper = styled.div<{
   margin?: number;
 }>`
-  margin: 0px ${({ margin }) => margin || 16}px;
+  margin: 4px ${({ margin }) => margin || 16}px;
 `;
 
 const IconWrapper = styled.button`

@@ -68,7 +68,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
             add friends
           </BodyText>
         </ListItemWrapper>
-        {friends.slice(0, 6).map((friend, idx) => (
+        {friends.map((friend, idx) => (
           <ListItemWrapper key={idx}>
             <Avatar dimension={80} letterSize={25} name={friend.username} />
             <BodyText>{friend.username}</BodyText>
@@ -90,7 +90,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
           </CircleButton>
           <BodyText>Add Communities</BodyText>
         </ListItemWrapper> */}
-        {communities.slice(0, 6).map((community, idx) => (
+        {communities.map((community, idx) => (
           <ListItemWrapper key={idx}>
             <Avatar dimension={80} letterSize={25} name={community.name} />
             <BodyText>{community.name}</BodyText>
@@ -150,19 +150,22 @@ const BodyText = styled.div`
 `;
 
 const ListItemWrapper = styled.div`
-  display: flex-direction-column;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
   align-items: center;
   margin-right: 24px;
   max-width: 75px;
+  margin-top: 8px;
 `;
 
 const ListWrapper = styled.div`
   ${PageContent}
-  padding: 24px 0;
+  margin-top: 8px;
+  margin-bottom: 24px;
   display: flex;
-  justify-content: left;
+  flex-wrap: wrap;
 `;
 
 const SearchInput = styled.input`

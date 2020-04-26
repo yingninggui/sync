@@ -7,7 +7,7 @@ FROM (VALUES ('yayimahuman'), ('ez'), ('dmytro'), ('therealyg'), ('theupquark'),
 --             ^     \
 --             |      \
 --             v       v
--- dmytro <-> ez <-> therealyg 
+-- dmytro <-> ez <-> therealyg
 INSERT INTO user_friend(from_id, to_id)
 VALUES (1, 2), (2, 1), (2, 3), (3, 2), (1, 4), (4, 1), (2, 4), (4, 2);
 
@@ -43,15 +43,20 @@ INSERT INTO community_user(community_id, user_id)
 VALUES (9, 1), (9, 4);
 
 INSERT INTO sync(name, description, cover_photo_url, deadline, community_id, owner_id, public)
-VALUES ('CS 341 Assignment 2', 'Everyone welcome to join', '/img/7.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, TRUE),
-       ('HackNow Online Hackathon', 'Let ''s make a website called Let''sSync', '/img/3.jpg', CURRENT_TIMESTAMP + '1 hour', 1, 2, FALSE);
+VALUES ('HackNow Online Hackathon', 'Let ''s make a website called Let''sSync', '/img/8.jpg', CURRENT_TIMESTAMP + '8 hour', 1, 2, TRUE),
+       ('CS 341 Assignment 2', 'Everyone welcome to join', '/img/1.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, FALSE),
+       ('CS 350 Final Exam', 'Yay operating systems', '/img/2.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE);
+
+INSERT INTO sync_invited_user(sync_id, user_id)
+SELECT 1, u.id FROM "user" u;
 
 INSERT INTO sync_invited_user(sync_id, user_id)
 VALUES (2, 1), (2, 2), (2, 3), (2, 4);
 
 INSERT INTO sync_invited_user(sync_id, user_id)
-SELECT 1, u.id FROM "user" u;
+VALUES (3, 2), (3, 4), (3, 5), (3, 7);
 
 INSERT INTO checkpoint(sync_id, name)
-VALUES (1, 'Question 1'), (1, 'Question 2A'), (1, 'Question 2B'), (1, 'Question 3'),
-       (2, 'Mock-ups'), (2, 'Database schema'), (2, 'Frontend skeleton');
+VALUES (1, 'Mock-ups'), (1, 'Database schema'), (1, 'Frontend skeleton'),
+       (2, 'Question 1'), (2, 'Question 2A'), (2, 'Question 2B'), (2, 'Question 3'),
+       (3, 'Filesystems'), (3, 'Synchronization'), (3, 'Scheduling'), (3, 'Virtual Memory');
