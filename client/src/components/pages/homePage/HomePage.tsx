@@ -8,6 +8,7 @@ import { PageContent } from '../../../constants/Styles';
 import SyncCard from './SyncCard';
 import { Sync } from '../../../graphql/Schema';
 import { SyncFragment } from '../../../graphql/Fragments';
+import Spinner from '../../common/Spinner';
 
 const GET_FEED = gql`
   query getPublicFeed($public: Boolean!) {
@@ -45,7 +46,7 @@ const HomePage: React.FC<any> = ({ theme }) => {
       >
         Private
       </Button>
-      {loading && <div>Loading...</div>}
+      {loading && <Spinner />}
       {error && <div>Error</div>}
       {data && (
         <Feed>
