@@ -24,6 +24,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({
     dimension={dimension}
     onClick={onClick}
     margin={margin}
+    onMouseDown={(e: any) => e.preventDefault()}
   >
     {children}
   </RoundButtonStyle>

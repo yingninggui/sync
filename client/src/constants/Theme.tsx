@@ -8,8 +8,8 @@ export default {
   /* Red */
   red: '#f88ba8',
   darkRed: '#ea4672',
-  error: '#BB1E1E',
-  errorHover: '#cb2e2e',
+  error: '#cc1748',
+  darkError: '#bb1e1e',
 
   /* green */
   success: '#00FF7F',

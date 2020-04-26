@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PhoneMissed, MicOff } from 'react-feather';
-import { Row, Col } from 'reactstrap';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
+import { withRouter } from 'react-router-dom';
 import url from 'url';
 import gql from 'graphql-tag';
 import _, { Dictionary } from 'lodash';
@@ -11,10 +11,11 @@ import { currentUserId } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
-import { BorderRadius } from '../../../constants/Styles';
+import { BorderRadius, Heading2, Card } from '../../../constants/Styles';
 
 import { User, Checkpoint, Sync } from '../../../graphql/Schema';
 import { SyncFragment } from '../../../graphql/Fragments';
+import { HOME_PAGE_ROUTE } from '../../../constants/Routes';
 
 const GET_SYNC_DETAILS = gql`
   query getSyncDetails($id: Int!) {
@@ -62,10 +63,10 @@ const AvatarMini: React.FC<any> = (props: User, key) => (
   </AvatarWrapper>
 );
 
-function getDoneUsers(
+const getDoneUsers = (
   users: User[],
   checkpoints: Checkpoint[],
-): [User[], User[]] {
+): [User[], User[]] => {
   const userMap: Dictionary<User> = _.keyBy(users, (user) => user.id);
   const idCounts = _.chain(checkpoints)
     .map((c) => c.users_completed.map((u) => u.id))
@@ -74,7 +75,7 @@ function getDoneUsers(
     .value();
 
   const usersDoneAll: User[] = [];
-  const other: User[] = [];
+  const stillWorking: User[] = [];
 
   Object.keys(idCounts).forEach((key) => {
     const value: number = idCounts[key];
@@ -82,14 +83,14 @@ function getDoneUsers(
     if (value === checkpoints.length) {
       usersDoneAll.push(user);
     } else {
-      other.push(user);
+      stillWorking.push(user);
     }
   });
 
-  return [usersDoneAll, other];
-}
+  return [usersDoneAll, stillWorking];
+};
 
-const SyncPage: React.FC<any> = ({ theme, match }) => {
+const SyncPage: React.FC<any> = ({ theme, match, history }) => {
   const syncID = parseInt(match.params.syncID, 10);
   const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
     variables: { id: syncID },
@@ -108,7 +109,7 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
     users.push(...data.sync[0].invited_users);
   }
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
-  const [usersDoneAll, other] = getDoneUsers(users, checkpoints);
+  const [usersDoneAll, stillWorking] = getDoneUsers(users, checkpoints);
 
   // set checkpoint completed == false
   const [setCompletedMutation] = useMutation<{
@@ -148,7 +149,6 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
 
   return (
     <SyncPageWrapper>
-      <div></div>
       <Row>
         {users.map((user, i) => (
           <AvatarWrapper key={i}>
@@ -157,29 +157,41 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
         ))}
       </Row>
       <Row>
-        <Col style={{ padding: '0px 50px' }}>
+        <Col style={{ padding: '0px 40px' }}>
           <SyncPageCard>
-            <h3 style={{ textAlign: 'center' }}>Checkpoints</h3>
+            <BoxHeading>Checkpoints</BoxHeading>
             {checkpoints.map(({ id: checkpointId, name }) => (
               <Checkbox
                 key={checkpointId}
                 onClick={() => onCheckboxBtnClick(checkpointId)}
                 active={cSelected.includes(checkpointId)}
                 text={name}
-                fontSize={18}
               />
             ))}
           </SyncPageCard>
         </Col>
-        <Col style={{ padding: '0px 50px' }}>
+        <Col style={{ padding: '0px 40px' }}>
           <SyncPageCard>
-            <h3 style={{ textAlign: 'center' }}>Who&apos;s done:</h3>
-            <Row style={{ marginBottom: '20px', justifyContent: 'center' }}>
+            <BoxHeading>
+              Done all checkpoints{' '}
+              <span role="img" aria-label="party popper">
+                🎉
+              </span>
+            </BoxHeading>
+            <Row style={{ marginBottom: '20px' }}>
+              {usersDoneAll.length === 0 &&
+                'No one yet, be the first one here!'}
               {usersDoneAll.map(AvatarMini)}
             </Row>
-            <h3 style={{ textAlign: 'center' }}>Who&apos;s still working:</h3>
-            <Row style={{ justifyContent: 'center' }}>
-              {other.map(AvatarMini)}
+            <BoxHeading>
+              Still working{' '}
+              <span role="img" aria-label="man technologist">
+                👨‍💻
+              </span>
+            </BoxHeading>
+            <Row>
+              {stillWorking.length === 0 && "Everyone's all done!"}
+              {stillWorking.map(AvatarMini)}
             </Row>
           </SyncPageCard>
         </Col>
@@ -198,14 +210,16 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
           bgColor={theme.error}
           dimension={80}
           margin="0px 20px"
+          onClick={() => history.push(HOME_PAGE_ROUTE)}
         >
           <PhoneMissed size={40} />
         </RoundButton>
       </Row>
-      <div></div>
     </SyncPageWrapper>
   );
 };
+
+export default withTheme(withRouter(SyncPage));
 
 const SyncPageWrapper = styled.div`
   background: url(${url.resolve(process.env.PUBLIC_URL || '', '/img/bg.jpg')})
@@ -216,25 +230,41 @@ const SyncPageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: ;
+  padding: 48px;
 `;
 
 const SyncPageCard = styled.div`
-    ${BorderRadius}
-    background-color: ${({ theme }) => `${theme.white}B0`};
-    min-width: 300px;
-    height: 100%;
-    width: 30vw;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  ${BorderRadius}
+  ${Card}
+  background-color: rgba(255, 255, 255, 0.95);
+  min-width: 300px;
+  height: 100%;
+  width: 400px;
+  max-width: 30vw;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const AvatarWrapper = styled.div<{
   margin?: number;
 }>`
-  margin: 0px ${({ margin }) => margin || 15}px;
+  margin: 0px ${({ margin }) => margin || 16}px;
 `;
 
-export default withTheme(SyncPage);
+const BoxHeading = styled.div`
+  ${Heading2}
+  color: ${({ theme }) => theme.primaryGrey};
+  margin-bottom: 8px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.dark3};
+`;
+
+const Col = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: ${({ theme }) => theme.dark3};
+`;

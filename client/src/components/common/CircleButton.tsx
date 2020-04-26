@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Body } from '../../constants/Styles';
+import { Body, DarkHover } from '../../constants/Styles';
 
 interface CircleButtonProps {
   textColor?: string;
@@ -21,6 +21,7 @@ const CircleButton: React.FC<CircleButtonProps> = ({
     bgColor={bgColor}
     dimension={dimension}
     onClick={onClick}
+    onMouseDown={(e: any) => e.preventDefault()}
   >
     {children}
   </CircleButtonStyle>
@@ -33,11 +34,14 @@ const CircleButtonStyle = styled.button<{
   bgColor?: string;
   dimension?: number;
 }>`
+  ${DarkHover()}
   ${Body}
   font-size: 20px;
   padding: 10px;
   margin: 20;
   border-radius: 50%;
+  border: none;
+  outline: none;
   text-align: center;
   display: flex;
   justify-content: center;
