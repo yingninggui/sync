@@ -61,6 +61,7 @@ const StyledNavbar = styled.nav`
   padding: 24px 0;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid ${({ theme }) => theme.light1};
 `;
 
 const TitleText = styled(Link)`
