@@ -77,8 +77,8 @@ const getDoneUsers = (
   const usersDoneAll: User[] = [];
   const stillWorking: User[] = [];
 
-  Object.keys(idCounts).forEach((key) => {
-    const value: number = idCounts[key];
+  Object.keys(userMap).forEach((key) => {
+    const value: number = idCounts[key] || 0;
     const user: User = userMap[key];
     if (value === checkpoints.length) {
       usersDoneAll.push(user);
@@ -222,8 +222,9 @@ const SyncPage: React.FC<any> = ({ theme, match, history }) => {
 export default withTheme(withRouter(SyncPage));
 
 const SyncPageWrapper = styled.div`
-  background: url(${url.resolve(process.env.PUBLIC_URL || '', '/img/bg.jpg')})
-    ${({ theme }) => theme.primary} no-repeat center center fixed;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    url(${url.resolve(process.env.PUBLIC_URL || '', '/img/bg.jpg')})
+      ${({ theme }) => theme.primary} no-repeat center center fixed;
   background-size: cover;
   height: calc(100% - 90px);
   display: flex;

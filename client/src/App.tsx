@@ -13,7 +13,7 @@ import Navbar from './components/navigation/Navbar';
 // TODO: Lazy load page components
 import HomePage from './components/pages/homePage/HomePage';
 import ProfilePage from './components/pages/profilePage/ProfilePage';
-import SyncPage from './components/pages/syncPage/SyncPage';
+import Swrtc from './components/pages/syncPage/Swrtc';
 import LoginPage from './components/pages/loginPage/LoginPage';
 
 const App: React.FC = () => (
@@ -23,7 +23,7 @@ const App: React.FC = () => (
       <Route component={Navbar} />
     </Switch>
     <Switch>
-      <Route path={SYNC_PAGE_ROUTE} component={SyncPage} />
+      <Route path={SYNC_PAGE_ROUTE} component={Swrtc} />
       <Route path={PROFILE_PAGE_ROUTE} component={ProfilePage} />
       <Route path={LOGIN_PAGE_ROUTE} component={LoginPage} />
       <Route exact path={HOME_PAGE_ROUTE} component={HomePage} />

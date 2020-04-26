@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { Sync } from '../../../graphql/Schema';
-import { BorderRadius, Heading2, Body } from '../../../constants/Styles';
+import {
+  BorderRadius,
+  Heading2,
+  Body,
+  BoxShadow,
+} from '../../../constants/Styles';
 import Button from '../../common/Button';
 import { getSyncPageRoute } from '../../../constants/Routes';
 
@@ -32,6 +37,7 @@ export default SyncCard;
 
 const SyncCardWrapper = styled.div`
   ${BorderRadius}
+  ${BoxShadow}
   background: ${({ theme }) => theme.light1};
   display: flex;
   flex-direction: column;
