@@ -14,8 +14,9 @@ export interface Community {
   users: User[];
 }
 
-export interface LogIn {
+export interface LogInResponse {
   access_token: string;
+  user_id: number;
 }
 
 export interface Sync {
