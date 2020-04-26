@@ -8,7 +8,7 @@ import Spinner from '../../common/Spinner';
 
 const API_KEY = '3276cf5e7a165e35130996ad';
 
-const CONFIG_URL = `https://api.simplewebrtc.com/config/guest/${API_KEY}`;
+const CONFIG_URL = `https://api.simplewebrtc.com/config/user/${API_KEY}`;
 
 const Swrtc: React.FC<any> = (props) => {
   const { syncID } = props.match.params;
