@@ -111,7 +111,7 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
             onClick={() =>
               logInMutation({
                 variables: {
-                  email: 'yayimahuman@gmail.com',
+                  email: 'therealyg@gmail.com',
                   password: 'password',
                 },
               })
