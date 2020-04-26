@@ -33,16 +33,17 @@ const SyncCard: React.FC<SyncCardProps> = ({ sync }) => {
       <SyncCardBackground src={sync.cover_photo_url || '/img/bg.jpg'} />
       <Content>
         <Name>{sync.name}</Name>
-
         <Link to={getSyncPageRoute(sync.id)}>
           <Button>Join</Button>
         </Link>
       </Content>
       <Content>
         <GreyText>
-          Invited: {sync.invited_users.map((u) => `@${u.username}`).join(',')}
+          Invited: {sync.invited_users.map((u) => `@${u.username}`).join(', ')}
         </GreyText>
-        <GreyText>{timeString && `Deadline: ${timeString}`}</GreyText>
+        <GreyText style={{ whiteSpace: 'nowrap', marginLeft: '24px' }}>
+          {timeString && `Deadline: ${timeString}`}
+        </GreyText>
       </Content>
     </SyncCardWrapper>
   );
