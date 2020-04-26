@@ -69,7 +69,7 @@ const AddFriendModal: React.FC<AddFriendModalProps> = ({
   return (
     <AddFriendModalWrapper>
       <SearchInput
-        placeholder="Search for new friend"
+        placeholder="Search for a new friend"
         value={name}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setName(e.target.value);
@@ -99,6 +99,9 @@ const AddFriendModal: React.FC<AddFriendModalProps> = ({
           </Button>
         </FriendWrapper>
       ))}
+      {notInFriendsList.length === 0 && name !== '' && (
+        <Text style={{ margin: '16px auto' }}>No users found</Text>
+      )}
     </AddFriendModalWrapper>
   );
 };

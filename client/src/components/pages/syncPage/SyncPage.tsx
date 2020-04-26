@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { PhoneMissed, MicOff, Plus } from 'react-feather';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
@@ -16,6 +16,7 @@ import {
   Heading2,
   Card,
   GreenIcon,
+  Input,
 } from '../../../constants/Styles';
 
 import { User, Checkpoint, Sync } from '../../../graphql/Schema';
@@ -44,6 +45,25 @@ const DELETE_CHECKPOINT_COMPLETED = gql`
       returning {
         checkpoint_id
         user_id
+      }
+    }
+  }
+`;
+
+const INSERT_CHECKPOINT = gql`
+  mutation insertCheckpoint($name: String!, $sync_id: Int!) {
+    insert_checkpoint_one(object: { name: $name, sync_id: $sync_id }) {
+      id
+      name
+    }
+  }
+`;
+
+const DELETE_CHECKPOINT = gql`
+  mutation deleteCheckpoint($checkpointId: Int!) {
+    delete_checkpoint(where: { checkpoint_id: { _eq: $checkpointId } }) {
+      returning {
+        checkpoint_id
       }
     }
   }
@@ -84,9 +104,14 @@ const getDoneUsers = (
 
 const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   const syncID = parseInt(match.params.syncID, 10);
+  const [checkpointInput, setCheckpointInput] = useState<string>('');
+
   const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
     variables: { id: syncID },
   });
+  const refetchQueries = [
+    { query: GET_SYNC_DETAILS, variables: { id: syncID } },
+  ];
 
   const userId: number = currentUserId();
   const myUsername: string = currentUsername();
@@ -104,18 +129,24 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
   const [usersDoneAll, stillWorking] = getDoneUsers(users, checkpoints);
 
-  // set checkpoint completed == false
+  /* Mutations */
   const [setCompletedMutation] = useMutation<{
     insert_user_completed_checkpoint_one: Checkpoint;
-  }>(SET_CHECKPOINT_COMPLETED, {
-    refetchQueries: [{ query: GET_SYNC_DETAILS, variables: { id: syncID } }],
+  }>(SET_CHECKPOINT_COMPLETED, { refetchQueries });
+
+  const [deleteCompletedMutation] = useMutation(DELETE_CHECKPOINT_COMPLETED, {
+    refetchQueries,
   });
 
-  // set checkpoint completed == true
-  const [deleteCompletedMutation] = useMutation<{
-    delete_user_completed_checkpoint: Checkpoint;
-  }>(DELETE_CHECKPOINT_COMPLETED, {
-    refetchQueries: [{ query: GET_SYNC_DETAILS, variables: { id: syncID } }],
+  const [insertCheckpointMutation] = useMutation<{
+    insert_checkpoint_one: Checkpoint;
+  }>(INSERT_CHECKPOINT, {
+    refetchQueries,
+    onCompleted: () => setCheckpointInput(''),
+  });
+
+  const [deleteCheckpointMutation] = useMutation(DELETE_CHECKPOINT, {
+    refetchQueries,
   });
 
   const [cSelected, setCSelected] = useState<number[]>([]);
@@ -156,12 +187,30 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
       <Row>
         <Col style={{ padding: '0px 40px' }}>
           <SyncPageCard>
-            <Row style={{ justifyContent: 'space-between' }}>
-              <BoxHeading>Checkpoints</BoxHeading>
-              <IconWrapper>
-                <Plus />
-              </IconWrapper>
-            </Row>
+            <BoxHeading>Checkpoints</BoxHeading>
+            <form
+              onSubmit={(e: any) => {
+                e.preventDefault();
+                insertCheckpointMutation({
+                  variables: { name: checkpointInput, sync_id: syncID },
+                });
+              }}
+            >
+              <Row
+                style={{ justifyContent: 'space-between', marginBottom: '8px' }}
+              >
+                <TextInput
+                  placeholder="Finish X..."
+                  value={checkpointInput}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setCheckpointInput(e.target.value)
+                  }
+                />
+                <IconWrapper type="submit">
+                  <Plus />
+                </IconWrapper>
+              </Row>
+            </form>
             {checkpoints.map(({ id: checkpointId, name }) => (
               <Checkbox
                 key={checkpointId}
@@ -255,7 +304,7 @@ const AvatarWrapper = styled.div<{
   margin: 0px ${({ margin }) => margin || 16}px;
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.button`
   ${GreenIcon}
 `;
 
@@ -274,4 +323,11 @@ const Col = styled.div`
   display: flex;
   flex-direction: column;
   color: ${({ theme }) => theme.dark3};
+`;
+
+const TextInput = styled.input`
+  ${Input}
+  background: ${({ theme }) => theme.light3};
+  width: 100%;
+  margin-right: 32px;
 `;

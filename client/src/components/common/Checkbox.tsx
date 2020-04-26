@@ -7,7 +7,6 @@ import { Body, DarkHover } from '../../constants/Styles';
 interface CheckboxProps {
   theme: any;
   text: string;
-  fontSize?: number;
   active: boolean;
   onClick?: () => void;
 }
@@ -37,7 +36,7 @@ const StyledCheckbox = styled.button<{
   ${DarkHover()}
   background: none;
   border: 0;
-  font-size: 16px;
+  font-size: 18px;
   display: flex;
   color: ${({ theme }) => theme.dark1};
 `;

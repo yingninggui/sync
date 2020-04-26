@@ -119,6 +119,7 @@ export const GreenIcon = css`
   border-radius: 50%;
   height: 36px;
   width: 36px;
+  min-width: 36px;
   background: ${({ theme }) => theme.primary};
   border: none;
   outline: none;
