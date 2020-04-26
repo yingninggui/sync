@@ -24,5 +24,5 @@ export const currentUserId = (): number => {
 };
 
 export const currentUsername = (): string => {
-  return localStorage.getItem('username');
+  return localStorage.getItem('username') || '';
 };
