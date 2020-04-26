@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import url from 'url';
 import gql from 'graphql-tag';
-import _ from 'lodash';
+import _, { Dictionary } from 'lodash';
 
 import { currentUserId } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
@@ -56,6 +56,39 @@ const DELETE_CHECKPOINT_COMPLETED = gql`
   }
 `;
 
+const AvatarMini: React.FC<any> = (props: User, key) => (
+  <AvatarWrapper margin={5} key={key}>
+    <Avatar name={props.username} dimension={30} letterSize={18} />
+  </AvatarWrapper>
+);
+
+function getDoneUsers(
+  users: User[],
+  checkpoints: Checkpoint[],
+): [User[], User[]] {
+  const userMap: Dictionary<User> = _.keyBy(users, (user) => user.id);
+  const idCounts = _.chain(checkpoints)
+    .map((c) => c.users_completed.map((u) => u.id))
+    .flatten()
+    .countBy()
+    .value();
+
+  const usersDoneAll: User[] = [];
+  const other: User[] = [];
+
+  Object.keys(idCounts).forEach((key) => {
+    const value: number = idCounts[key];
+    const user: User = userMap[key];
+    if (value === checkpoints.length) {
+      usersDoneAll.push(user);
+    } else {
+      other.push(user);
+    }
+  });
+
+  return [usersDoneAll, other];
+}
+
 const SyncPage: React.FC<any> = ({ theme, match }) => {
   const syncID = parseInt(match.params.syncID, 10);
   const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
@@ -75,6 +108,7 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
     users.push(...data.sync[0].invited_users);
   }
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
+  const [usersDoneAll, other] = getDoneUsers(users, checkpoints);
 
   // set checkpoint completed == false
   const [setCompletedMutation] = useMutation<{
@@ -116,13 +150,11 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
     <SyncPageWrapper>
       <div></div>
       <Row>
-        {users
-          .map((user) => ({ name: user.username }))
-          .map((user, i) => (
-            <AvatarWrapper key={i}>
-              <Avatar {...user} />
-            </AvatarWrapper>
-          ))}
+        {users.map((user, i) => (
+          <AvatarWrapper key={i}>
+            <Avatar name={user.username} letterSize={48} />
+          </AvatarWrapper>
+        ))}
       </Row>
       <Row>
         <Col style={{ padding: '0px 50px' }}>
@@ -141,11 +173,14 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
         </Col>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
-            <h3 style={{ textAlign: 'center' }}>People who have finished:</h3>
-
-            <h3 style={{ textAlign: 'center' }}>
-              People who are still working:
-            </h3>
+            <h3 style={{ textAlign: 'center' }}>Who&apos;s done:</h3>
+            <Row style={{ marginBottom: '20px', justifyContent: 'center' }}>
+              {usersDoneAll.map(AvatarMini)}
+            </Row>
+            <h3 style={{ textAlign: 'center' }}>Who&apos;s still working:</h3>
+            <Row style={{ justifyContent: 'center' }}>
+              {other.map(AvatarMini)}
+            </Row>
           </SyncPageCard>
         </Col>
       </Row>
@@ -196,8 +231,10 @@ const SyncPageCard = styled.div`
     justify-content: center;
 `;
 
-const AvatarWrapper = styled.div`
-  margin: 0px 15px;
+const AvatarWrapper = styled.div<{
+  margin?: number;
+}>`
+  margin: 0px ${({ margin }) => margin || 15}px;
 `;
 
 export default withTheme(SyncPage);
