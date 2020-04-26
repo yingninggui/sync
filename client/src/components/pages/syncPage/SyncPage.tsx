@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PhoneMissed, MicOff } from 'react-feather';
 import { Row, Col } from 'reactstrap';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import url from 'url';
 import gql from 'graphql-tag';
@@ -28,6 +28,33 @@ const GET_SYNC_DETAILS = gql`
   ${SyncFragment.syncCheckpoints}
 `;
 
+const SET_CHECKPOINT_COMPLETED = gql`
+  mutation setCheckpointCompleted($checkpointId: Int!, $userId: Int!) {
+    insert_user_completed_checkpoint_one(
+      object: { checkpoint_id: $checkpointId, user_id: $userId }
+    ) {
+      checkpoint_id
+      user_id
+    }
+  }
+`;
+
+const DELETE_CHECKPOINT_COMPLETED = gql`
+  mutation deleteCheckpointCompleted($checkpointId: Int!, $userId: Int!) {
+    delete_user_completed_checkpoint(
+      where: {
+        checkpoint_id: { _eq: $checkpointId }
+        user_id: { _eq: $userId }
+      }
+    ) {
+      returning {
+        checkpoint_id
+        user_id
+      }
+    }
+  }
+`;
+
 const SyncPage: React.FC<any> = ({ theme, match }) => {
   const syncID = parseInt(match.params.syncID, 10);
   const { loading, error, data } = useQuery<{ sync: Sync[] }>(
@@ -37,23 +64,49 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
     },
   );
 
-  console.log(loading, error, data);
+  const userId = 1;
+
   if (data && data.sync.length < 1) {
     throw new Error('No sync with this ID found');
   }
   const users: Array<User> = _.get(data, 'sync[0].invited_users', []);
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
 
-  const [cSelected, setCSelected] = useState<Array<any>>([]);
-  const onCheckboxBtnClick = (selected: any) => {
-    const index: number = cSelected.indexOf(selected);
+  // set checkpoint completed == false
+  const [setCompletedMutation] = useMutation<{
+    insert_user_completed_checkpoint_one: Checkpoint;
+  }>(SET_CHECKPOINT_COMPLETED, {});
+
+  // set checkpoint completed == true
+  const [deleteCompletedMutation] = useMutation<{
+    delete_user_completed_checkpoint: Checkpoint;
+  }>(DELETE_CHECKPOINT_COMPLETED, {});
+
+  const [cSelected, setCSelected] = useState<number[]>([]);
+  const onCheckboxBtnClick = (selectedId: any) => {
+    const index: number = cSelected.indexOf(selectedId);
     if (index < 0) {
-      cSelected.push(selected);
+      cSelected.push(selectedId);
+      setCompletedMutation({
+        variables: { checkpointId: selectedId, userId },
+      });
     } else {
       cSelected.splice(index, 1);
+      deleteCompletedMutation({
+        variables: { checkpointId: selectedId, userId },
+      });
     }
     setCSelected([...cSelected]);
   };
+
+  // on load, get checkpoints that current user has completed and update list
+  const userCompleted: number[] = checkpoints
+    .filter((c) => c.users_completed.filter((u) => u.id === userId).length > 0)
+    .map((c) => c.id);
+
+  useEffect(() => {
+    setCSelected(userCompleted);
+  }, [userCompleted.length]);
 
   return (
     <SyncPageWrapper>
