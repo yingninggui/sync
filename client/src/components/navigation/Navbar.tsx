@@ -11,7 +11,11 @@ import {
   Input,
   BoxShadow,
 } from '../../constants/Styles';
-import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
+import {
+  PROFILE_PAGE_ROUTE,
+  HOME_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE,
+} from '../../constants/Routes';
 import { isLoggedIn } from '../../utils/Auth';
 import CreateSyncModal from './CreateSyncModal';
 
@@ -20,7 +24,7 @@ const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      // history.push(LOGIN_PAGE_ROUTE);
+      history.push(LOGIN_PAGE_ROUTE);
     }
   }, [history]);
 

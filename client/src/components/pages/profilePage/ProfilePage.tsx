@@ -68,8 +68,8 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
       <ListWrapper>
         <ListItemWrapper>
           <CircleButton
-            textColor={theme.white}
-            bgColor={theme.primaryGrey}
+            textColor={theme.dark3}
+            bgColor={theme.light1}
             dimension={80}
             onClick={() => setAddFriendModal(true)}
           >
@@ -77,7 +77,9 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
               <Plus size={20} />
             </Icons>
           </CircleButton>
-          <BodyText>+friends</BodyText>
+          <BodyText style={{ marginTop: '2px', fontWeight: 700 }}>
+            add friends
+          </BodyText>
         </ListItemWrapper>
         {friends.slice(0, 6).map((friend, idx) => (
           <ListItemWrapper key={idx}>
@@ -88,7 +90,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
       </ListWrapper>
       <TitleText>Communities</TitleText>
       <ListWrapper>
-        <ListItemWrapper>
+        {/* <ListItemWrapper>
           <CircleButton
             textColor={theme.white}
             bgColor={theme.primaryGrey}
@@ -99,8 +101,8 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
               <Plus size={20} />
             </Icons>
           </CircleButton>
-          <BodyText>+community</BodyText>
-        </ListItemWrapper>
+          <BodyText>Add Communities</BodyText>
+        </ListItemWrapper> */}
         {communities.slice(0, 6).map((community, idx) => (
           <ListItemWrapper key={idx}>
             <Avatar dimension={80} letterSize={25} name={community.name} />
@@ -113,7 +115,10 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
         isOpen={addFriendModal}
         toggle={() => setAddFriendModal(!addFriendModal)}
       >
-        <AddFriendModal closeModal={() => setAddFriendModal(false)} />
+        <AddFriendModal
+          closeModal={() => setAddFriendModal(false)}
+          friends={friends}
+        />
       </Modal>
       <Modal
         centered
