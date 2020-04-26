@@ -32,7 +32,7 @@ VALUES ($1, $2, $3) RETURNING id
 `
 
 func register(tx *db.Tx, email string, username string, password string) (*authResponse, error) {
-	var response authResponse
+	var response = authResponse{Username: username}
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcryptCost)
 	if err != nil {
