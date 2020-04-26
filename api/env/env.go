@@ -7,7 +7,8 @@ import (
 )
 
 type Environment struct {
-	JwtKey             []byte `from:"HASURA_GRAPHQL_JWT_KEY"`
+	HasuraJwtKey       []byte `from:"HASURA_GRAPHQL_JWT_KEY"`
+	SwrtcJwtKey        []byte `from:"SWRTC_SECRET"`
 	PostgresConnString string `from:"HASURA_GRAPHQL_DATABASE_URL"`
 }
 

@@ -41,9 +41,13 @@ func login(tx *db.Tx, email string, password []byte) (*authResponse, error) {
 		return nil, handle.WithEnum(handle.EmailWrongPassword, fmt.Errorf("comparing hash and password: %w", err))
 	}
 
-	response.AccessToken, err = jwt.MakeAndSign(response.UserId)
+	response.AccessToken, err = jwt.MakeHasura(response.UserId)
 	if err != nil {
-		return nil, handle.WithStatus(http.StatusInternalServerError, fmt.Errorf("signing jwt: %w", err))
+		return nil, handle.WithStatus(http.StatusInternalServerError, fmt.Errorf("signing Hasura jwt: %w", err))
+	}
+	response.SwrtcToken, err = jwt.MakeSwrtc(response.UserId, response.Username)
+	if err != nil {
+		return nil, handle.WithStatus(http.StatusInternalServerError, fmt.Errorf("signing SWRTC jwt: %w", err))
 	}
 
 	return &response, nil

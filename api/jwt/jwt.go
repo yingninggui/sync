@@ -12,29 +12,35 @@ import (
 	"github.com/yingninggui/sync/api/handle"
 )
 
-type HasuraClaims struct {
+type HasuraSubclaims struct {
 	AllowedRoles []string `json:"x-hasura-allowed-roles"`
 	DefaultRole  string   `json:"x-hasura-default-role"`
 	UserId       string   `json:"x-hasura-user-id"`
 }
 
-type CombinedClaims struct {
-	Hasura HasuraClaims `json:"https://hasura.io/jwt/claims"`
+type HasuraClaims struct {
+	Hasura HasuraSubclaims `json:"https://hasura.io/jwt/claims"`
+	jwt.StandardClaims
+}
+
+type SwrtcClaims struct {
+	Id       int    `json:"id"`
+	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
 const ExpirationPeriod = 24 * time.Hour
 
-func MakeAndSign(userId int) (string, error) {
+func MakeHasura(userId int) (string, error) {
 	now := time.Now()
 
-	claims := CombinedClaims{
+	claims := HasuraClaims{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now.Unix(),
 			NotBefore: now.Unix(),
 			ExpiresAt: now.Add(ExpirationPeriod).Unix(),
 		},
-		Hasura: HasuraClaims{
+		Hasura: HasuraSubclaims{
 			AllowedRoles: []string{"user"},
 			DefaultRole:  "user",
 			UserId:       strconv.Itoa(userId),
@@ -42,7 +48,23 @@ func MakeAndSign(userId int) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	jwtString, err := token.SignedString(env.Global.JwtKey)
+	jwtString, err := token.SignedString(env.Global.HasuraJwtKey)
+
+	if err != nil {
+		return "", err
+	}
+
+	return jwtString, nil
+}
+
+func MakeSwrtc(userId int, username string) (string, error) {
+	claims := SwrtcClaims{
+		Id:       userId,
+		Username: username,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	jwtString, err := token.SignedString(env.Global.SwrtcJwtKey)
 
 	if err != nil {
 		return "", err
@@ -52,7 +74,7 @@ func MakeAndSign(userId int) (string, error) {
 }
 
 func globalKey(t *jwt.Token) (interface{}, error) {
-	return env.Global.JwtKey, nil
+	return env.Global.HasuraJwtKey, nil
 }
 
 func UserIdFromRequest(request *http.Request) (int, error) {
@@ -64,7 +86,7 @@ func UserIdFromRequest(request *http.Request) (int, error) {
 		return 0, fmt.Errorf("no authorization header")
 	}
 
-	token, err := jwt.ParseWithClaims(tokenString, new(CombinedClaims), globalKey)
+	token, err := jwt.ParseWithClaims(tokenString, new(HasuraClaims), globalKey)
 	if err != nil {
 		if vErr, ok := err.(*jwt.ValidationError); ok {
 			if vErr.Errors&jwt.ValidationErrorExpired != 0 {
@@ -76,7 +98,7 @@ func UserIdFromRequest(request *http.Request) (int, error) {
 	}
 
 	// This will work because ParseWithClaims encountered no error
-	claims := token.Claims.(*CombinedClaims)
+	claims := token.Claims.(*HasuraClaims)
 	userId, err := strconv.Atoi(claims.Hasura.UserId)
 	if err != nil {
 		return 0, fmt.Errorf("invalid user id: %w", err)

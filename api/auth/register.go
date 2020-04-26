@@ -44,9 +44,13 @@ func register(tx *db.Tx, email string, username string, password string) (*authR
 		return nil, handle.WithEnum(handle.EmailTaken, fmt.Errorf("inserting user: %w", err))
 	}
 
-	response.AccessToken, err = jwt.MakeAndSign(response.UserId)
+	response.AccessToken, err = jwt.MakeHasura(response.UserId)
 	if err != nil {
-		return nil, fmt.Errorf("signing jwt: %w", err)
+		return nil, fmt.Errorf("signing Hasura jwt: %w", err)
+	}
+	response.SwrtcToken, err = jwt.MakeSwrtc(response.UserId, response.Username)
+	if err != nil {
+		return nil, fmt.Errorf("signing SWRTC jwt: %w", err)
 	}
 
 	return &response, nil
