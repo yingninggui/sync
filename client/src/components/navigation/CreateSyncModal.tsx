@@ -23,13 +23,15 @@ const unsplash = new Unsplash({
   accessKey: 'YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40',
 });
 
-function getPhoto(title: string) {
+function getPhoto(title: string): string {
   unsplash.photos
     .getRandomPhoto({ query: title })
     .then(toJson)
     .then((json) => {
       console.log(json.links.html);
+      return json.links.html;
     });
+  return 'https://unsplash.com/photos/xHsr8Sb02PE';
 }
 const INSERT_SYNC = gql`
   mutation insertSync(
@@ -85,9 +87,9 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         value={name}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setName(e.target.value);
-          getPhoto(name);
         }}
       />
+      <CoverPhoto image={getPhoto(name)} />
       <InputWrapper>
         <InputIcon>
           <Users color={theme.light4} />
@@ -155,10 +157,12 @@ const SyncModalWrapper = styled.div`
   padding: 24px;
 `;
 
-const CoverPhoto = styled.div`
+const CoverPhoto = styled.div<{
+  image?: string;
+}>`
   ${BorderRadius}
   height: 120px;
-  background: url('/img/bg.jpg');
+  background: url('${({ image }) => image || '/img/bg.jpg'}');
   background-size: cover;
   background-position: center;
   margin-bottom: 8px;
