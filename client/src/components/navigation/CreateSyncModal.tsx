@@ -3,8 +3,6 @@ import styled, { withTheme } from 'styled-components';
 import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
 import gql from 'graphql-tag';
-import Unsplash, { toJson } from 'unsplash-js';
-
 import { useMutation } from '@apollo/react-hooks';
 import {
   BorderRadius,
@@ -19,18 +17,6 @@ import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
 import { Sync } from '../../graphql/Schema';
 
-const unsplash = new Unsplash({
-  accessKey: 'YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40',
-});
-
-function getPhoto(title: string) {
-  unsplash.photos
-    .getRandomPhoto({ query: title })
-    .then(toJson)
-    .then((json) => {
-      console.log(json.links.html);
-    });
-}
 const INSERT_SYNC = gql`
   mutation insertSync(
     $name: String!
@@ -85,7 +71,6 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         value={name}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setName(e.target.value);
-          getPhoto(name);
         }}
       />
       <InputWrapper>
@@ -121,7 +106,6 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
           setSelectedIndex={setPublicSync}
         />
       </InputWrapper>
-
       <ButtonWrapper>
         <Button margin="0 8px 0 0" onClick={closeModal}>
           Cancel
@@ -153,12 +137,13 @@ const SyncModalWrapper = styled.div`
   background: ${({ theme }) => theme.white};
   ${BorderRadius}
   padding: 24px;
+  position: relative;
 `;
 
 const CoverPhoto = styled.div`
   ${BorderRadius}
   height: 120px;
-  background: url('/img/bg.jpg');
+  background: url('/img/${Math.floor(Math.random() * 10 + 1)}.jpg');
   background-size: cover;
   background-position: center;
   margin-bottom: 8px;
