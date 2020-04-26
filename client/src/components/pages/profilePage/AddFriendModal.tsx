@@ -74,7 +74,7 @@ const AddFriendModal: React.FC<AddFriendModalProps> = ({ closeModal }) => {
       data2.allUsers.forEach((u) => {
         console.log('u:');
         console.log(u);
-        notFriendsSet.delete(u.id);
+        notFriendsSet.delete(u);
       });
     },
   });

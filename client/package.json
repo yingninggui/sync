@@ -22,7 +22,8 @@
     "reactstrap": "^8.4.1",
     "styled-components": "^5.1.0",
     "styled-components-breakpoint": "^3.0.0-preview.20",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "unsplash-js": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
