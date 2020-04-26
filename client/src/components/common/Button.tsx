@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DarkHover, BorderRadius, Body } from '../../constants/Styles';
+import {
+  DarkHover,
+  BorderRadius,
+  Body,
+  BoxShadow,
+} from '../../constants/Styles';
 
 interface ButtonProps {
   textColor?: string;
@@ -45,6 +50,7 @@ const StyledButton = styled.button<{
   ${BorderRadius}
   ${Body}
   ${DarkHover()}
+  ${BoxShadow}
   padding: 4px 16px;
   font-weight: 700;
   border: none;

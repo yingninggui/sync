@@ -4,7 +4,7 @@ import { Modal } from 'reactstrap';
 import { useQuery } from '@apollo/react-hooks';
 import { Plus } from 'react-feather';
 import gql from 'graphql-tag';
-import _ from 'lodash';
+
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
 import { Community, User } from '../../../graphql/Schema';
@@ -16,10 +16,14 @@ import {
   BorderRadius,
 } from '../../../constants/Styles';
 import AddFriendModal from './AddFriendModal';
+import { currentUserId } from '../../../utils/Auth';
+import Spinner from '../../common/Spinner';
 
-const GET_FRIENDS = gql`
-  query getFriends($user_id: Int!) {
+const GET_USER = gql`
+  query getUser($user_id: Int!) {
     user(where: { id: { _eq: $user_id } }) {
+      id
+      username
       friends {
         id
         username
@@ -35,23 +39,29 @@ const GET_FRIENDS = gql`
 const ProfilePage: React.FC<any> = ({ theme }) => {
   const [addFriendModal, setAddFriendModal] = useState<boolean>(false);
   const [addCommunityModal, setAddCommunityModal] = useState<boolean>(false);
-  const { loading, error, data } = useQuery<{ user: User[] }>(GET_FRIENDS, {
-    variables: { user_id: 4 },
+
+  const { loading, error, data } = useQuery<{ user: User[] }>(GET_USER, {
+    variables: { user_id: currentUserId() },
   });
-  console.log(loading, error, data);
-  if (data && data.user[0].friends.length < 1) {
-    throw new Error('Failed to find friends');
+
+  if (loading) {
+    return <Spinner />;
   }
-  const friends: Array<User> = _.get(data, 'user[0].friends', []);
-  const communities: Array<Community> = _.get(data, 'user[0].communities', []);
+
+  const friends: User[] = data?.user[0].friends || [];
+  const communities: Community[] = data?.user[0].communities || [];
 
   return (
     <ProfilePageWrapper>
       <UserWrapper>
-        <Avatar dimension={80} letterSize={25} name={'therealyg'} />
+        <Avatar
+          dimension={80}
+          letterSize={25}
+          name={data?.user[0].username || ''}
+        />
         <UsernameWrapper>
           <TitleText>Username</TitleText>
-          <UsernameBodyText>@therealyg</UsernameBodyText>
+          <UsernameBodyText>@{data?.user[0].username}</UsernameBodyText>
         </UsernameWrapper>
       </UserWrapper>
       <TitleText>Friends</TitleText>

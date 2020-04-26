@@ -1,9 +1,21 @@
 import React from 'react';
 import { Spinner as ReactstrapSpinner } from 'reactstrap';
-import { withTheme } from 'styled-components';
+import styled from 'styled-components';
 
-const Spinner: React.FC<any> = ({ theme }) => (
-  <ReactstrapSpinner style={{ color: theme.primary }} />
+const Spinner: React.FC = () => (
+  <SpinnerWrapper>
+    <ReactstrapSpinner />
+  </SpinnerWrapper>
 );
 
-export default withTheme(Spinner);
+const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 24px auto;
+
+  div {
+    color: ${({ theme }) => theme.primary} !important;
+  }
+`;
+
+export default Spinner;

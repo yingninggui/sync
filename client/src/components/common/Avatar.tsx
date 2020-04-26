@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BoxShadow } from '../../constants/Styles';
 
 const gradientPairings = [
   ['#ffa68e', '#861657'],
@@ -46,6 +47,7 @@ const AvatarStyle = styled.div<{
   letterSize?: number;
   bg: string[];
 }>`
+  ${BoxShadow}
   padding: 10px;
   margin: 20;
   border-radius: 50%;
