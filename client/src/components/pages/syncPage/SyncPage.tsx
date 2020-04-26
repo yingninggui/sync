@@ -7,6 +7,7 @@ import url from 'url';
 import gql from 'graphql-tag';
 import _ from 'lodash';
 
+import { currentUserId } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
@@ -61,7 +62,7 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
     variables: { id: syncID },
   });
 
-  const userId = 1;
+  const userId = currentUserId();
 
   if (data && data.sync.length < 1) {
     throw new Error('No sync with this ID found');
