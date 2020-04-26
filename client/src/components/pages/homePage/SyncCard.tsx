@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { Sync } from '../../../graphql/Schema';
-import { BorderRadius, Heading2 } from '../../../constants/Styles';
+import { BorderRadius, Heading2, Body } from '../../../constants/Styles';
 import Button from '../../common/Button';
+import { getSyncPageRoute } from '../../../constants/Routes';
 
 interface SyncCardProps {
   sync: Sync;
@@ -14,7 +16,14 @@ const SyncCard: React.FC<SyncCardProps> = ({ sync }) => (
     <SyncCardBackground src={sync.cover_photo_url || '/img/bg.jpg'} />
     <Content>
       <Name>{sync.name}</Name>
-      <Button>Join</Button>
+      <Link to={getSyncPageRoute(sync.id)}>
+        <Button>Join</Button>
+      </Link>
+    </Content>
+    <Content>
+      <Invited>
+        Invited: {sync.invited_users.map((u) => `@${u.username}`).join(',')}
+      </Invited>
     </Content>
   </SyncCardWrapper>
 );
@@ -38,15 +47,21 @@ const SyncCardBackground = styled.div<{ src: string }>`
   background: url(${({ src }) => src});
   background-size: cover;
   background-position: center;
+  margin-bottom: 12px;
 `;
 
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 4px;
 `;
 
 const Name = styled.div`
   ${Heading2}
   color: ${({ theme }) => theme.primaryGrey};
+`;
+
+const Invited = styled.div`
+  ${Body}
+  color: ${({ theme }) => theme.dark3};
 `;

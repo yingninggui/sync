@@ -23,9 +23,9 @@ const App: React.FC = () => (
       <Route component={Navbar} />
     </Switch>
     <Switch>
-      <Route exact path={SYNC_PAGE_ROUTE} component={SyncPage} />
-      <Route exact path={PROFILE_PAGE_ROUTE} component={ProfilePage} />
-      <Route exact path={LOGIN_PAGE_ROUTE} component={LoginPage} />
+      <Route path={SYNC_PAGE_ROUTE} component={SyncPage} />
+      <Route path={PROFILE_PAGE_ROUTE} component={ProfilePage} />
+      <Route path={LOGIN_PAGE_ROUTE} component={LoginPage} />
       <Route exact path={HOME_PAGE_ROUTE} component={HomePage} />
       <Route component={() => <div>Not Found</div>} />
     </Switch>

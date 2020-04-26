@@ -5,8 +5,9 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import url from 'url';
 import gql from 'graphql-tag';
-import _ from 'lodash';
+import _, { Dictionary } from 'lodash';
 
+import { currentUserId } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
@@ -55,22 +56,59 @@ const DELETE_CHECKPOINT_COMPLETED = gql`
   }
 `;
 
+const AvatarMini: React.FC<any> = (props: User, key) => (
+  <AvatarWrapper margin={5} key={key}>
+    <Avatar name={props.username} dimension={30} letterSize={18} />
+  </AvatarWrapper>
+);
+
+function getDoneUsers(
+  users: User[],
+  checkpoints: Checkpoint[],
+): [User[], User[]] {
+  const userMap: Dictionary<User> = _.keyBy(users, (user) => user.id);
+  const idCounts = _.chain(checkpoints)
+    .map((c) => c.users_completed.map((u) => u.id))
+    .flatten()
+    .countBy()
+    .value();
+
+  const usersDoneAll: User[] = [];
+  const other: User[] = [];
+
+  Object.keys(idCounts).forEach((key) => {
+    const value: number = idCounts[key];
+    const user: User = userMap[key];
+    if (value === checkpoints.length) {
+      usersDoneAll.push(user);
+    } else {
+      other.push(user);
+    }
+  });
+
+  return [usersDoneAll, other];
+}
+
 const SyncPage: React.FC<any> = ({ theme, match }) => {
   const syncID = parseInt(match.params.syncID, 10);
-  const { loading, error, data } = useQuery<{ sync: Sync[] }>(
-    GET_SYNC_DETAILS,
-    {
-      variables: { id: syncID },
-    },
-  );
+  const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
+    variables: { id: syncID },
+  });
 
-  const userId = 1;
+  const userId = currentUserId();
 
   if (data && data.sync.length < 1) {
     throw new Error('No sync with this ID found');
   }
-  const users: Array<User> = _.get(data, 'sync[0].invited_users', []);
+  const users: Array<User> = [];
+  if (data) {
+    if (data.sync[0].owner) {
+      users.push(data.sync[0].owner);
+    }
+    users.push(...data.sync[0].invited_users);
+  }
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
+  const [usersDoneAll, other] = getDoneUsers(users, checkpoints);
 
   // set checkpoint completed == false
   const [setCompletedMutation] = useMutation<{
@@ -111,7 +149,13 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
   return (
     <SyncPageWrapper>
       <div></div>
-      <Row>{users.map((user) => ({ name: user.username })).map(Avatar)}</Row>
+      <Row>
+        {users.map((user, i) => (
+          <AvatarWrapper key={i}>
+            <Avatar name={user.username} letterSize={48} />
+          </AvatarWrapper>
+        ))}
+      </Row>
       <Row>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
@@ -129,11 +173,14 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
         </Col>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
-            <h3 style={{ textAlign: 'center' }}>People who have finished:</h3>
-
-            <h3 style={{ textAlign: 'center' }}>
-              People who are still working:
-            </h3>
+            <h3 style={{ textAlign: 'center' }}>Who&apos;s done:</h3>
+            <Row style={{ marginBottom: '20px', justifyContent: 'center' }}>
+              {usersDoneAll.map(AvatarMini)}
+            </Row>
+            <h3 style={{ textAlign: 'center' }}>Who&apos;s still working:</h3>
+            <Row style={{ justifyContent: 'center' }}>
+              {other.map(AvatarMini)}
+            </Row>
           </SyncPageCard>
         </Col>
       </Row>
@@ -141,18 +188,18 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
         <RoundButton
           textColor={theme.white}
           bgColor={theme.primary}
-          dimension={100}
+          dimension={80}
           margin="0px 20px"
         >
-          <MicOff size={50} />
+          <MicOff size={40} />
         </RoundButton>
         <RoundButton
           textColor={theme.white}
           bgColor={theme.error}
-          dimension={100}
+          dimension={80}
           margin="0px 20px"
         >
-          <PhoneMissed size={50} />
+          <PhoneMissed size={40} />
         </RoundButton>
       </Row>
       <div></div>
@@ -182,6 +229,12 @@ const SyncPageCard = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+`;
+
+const AvatarWrapper = styled.div<{
+  margin?: number;
+}>`
+  margin: 0px ${({ margin }) => margin || 15}px;
 `;
 
 export default withTheme(SyncPage);
