@@ -45,7 +45,11 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
   });
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <ProfilePageWrapper>
+        <Spinner />
+      </ProfilePageWrapper>
+    );
   }
 
   const friends: User[] = data?.user[0].friends || [];

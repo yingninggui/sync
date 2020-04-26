@@ -18,6 +18,7 @@ export interface LogInResponse {
   access_token: string;
   user_id: number;
   username: string;
+  swrtc_token: string;
 }
 
 export interface Sync {

@@ -25,6 +25,7 @@ const SIGN_UP = gql`
       access_token
       user_id
       username
+      swrtc_token
     }
   }
 `;
@@ -35,6 +36,7 @@ const LOG_IN = gql`
       access_token
       user_id
       username
+      swrtc_token
     }
   }
 `;
