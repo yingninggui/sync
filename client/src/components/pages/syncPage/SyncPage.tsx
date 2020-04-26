@@ -263,14 +263,14 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
         </Col>
       </Row>
       <Row>
-        <RoundButton
+        {/* <RoundButton
           textColor={theme.white}
           bgColor={theme.primary}
           dimension={80}
           margin="0px 20px"
         >
           <MicOff size={40} />
-        </RoundButton>
+        </RoundButton> */}
         <RoundButton
           textColor={theme.white}
           bgColor={theme.error}
