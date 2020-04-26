@@ -57,6 +57,7 @@
     "@types/react-router-dom": "^5.1.4",
     "@types/reactstrap": "^8.4.2",
     "@types/styled-components": "^5.1.0",
+    "@types/unsplash-js": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.29.0",
     "eslint": "^6.8.0",

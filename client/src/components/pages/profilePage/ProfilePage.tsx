@@ -103,7 +103,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
         isOpen={addFriendModal}
         toggle={() => setAddFriendModal(!addFriendModal)}
       >
-        <AddFriendModal closeModal={() => setTaskModal(false)} />
+        <AddFriendModal closeModal={() => setAddFriendModal(false)} />
       </Modal>
       <Modal
         centered

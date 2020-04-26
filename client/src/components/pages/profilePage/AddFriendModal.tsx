@@ -35,10 +35,12 @@ const GET_FRIENDS = gql`
 `;
 
 const FIND_USER = gql`
-    user(where: {username: {_ilike: "e%"}}) {
-        id
-        username
+  query getUser($user_id: Int!) {
+    user(where: { username: { _ilike: "e%" } }) {
+      id
+      username
     }
+  }
 `;
 
 interface AddFriendModalProps {

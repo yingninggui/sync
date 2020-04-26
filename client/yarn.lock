@@ -1658,6 +1658,11 @@
     "@types/testing-library__dom" "*"
     pretty-format "^25.1.0"
 
+"@types/unsplash-js@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@types/unsplash-js/-/unsplash-js-6.0.1.tgz#b5a086b450dd94f198e05d2f8f03a8aa0e8fe9b4"
+  integrity sha512-hBRCtIxiuZG6npCjYfgMiuZDChwsH9LBBu6lhvOjmEjLn33ljRrwL25wdpzcO7BTLGaC+dOsLQzLmm+CG8xpEA==
+
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
