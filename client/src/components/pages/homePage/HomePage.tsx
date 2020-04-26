@@ -63,7 +63,7 @@ export default withTheme(HomePage);
 
 const HomePageWrapper = styled.div`
   ${PageContent}
-  padding-top: 16px;
+  padding: 16px 0;
 `;
 
 const Feed = styled.div`

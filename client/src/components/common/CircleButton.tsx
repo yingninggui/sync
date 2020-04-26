@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Body, DarkHover } from '../../constants/Styles';
+import { Body, DarkHover, BoxShadow } from '../../constants/Styles';
 
 interface CircleButtonProps {
   textColor?: string;
@@ -36,6 +36,7 @@ const CircleButtonStyle = styled.button<{
 }>`
   ${DarkHover()}
   ${Body}
+  ${BoxShadow}
   font-size: 20px;
   padding: 10px;
   margin: 20;

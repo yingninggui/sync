@@ -9,8 +9,8 @@ export const InterFont = css`
 `;
 
 export const BoxShadow = css`
-  box-shadow: 0px 2px 4px rgba(236, 237, 237, 0.4),
-    0px 0px 4px rgba(142, 147, 148, 0.2);
+  box-shadow: 0px 0px 8px rgba(236, 237, 237, 0.6),
+    0px 0px 4px rgba(142, 147, 148, 0.4);
 `;
 
 export const BorderRadius = css`

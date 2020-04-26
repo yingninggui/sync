@@ -9,6 +9,7 @@ import {
   Heading1,
   DarkHover,
   Input,
+  BoxShadow,
 } from '../../constants/Styles';
 import { PROFILE_PAGE_ROUTE, HOME_PAGE_ROUTE } from '../../constants/Routes';
 import { isLoggedIn } from '../../utils/Auth';
@@ -26,7 +27,7 @@ const Navbar: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <StyledNavbar>
       <TitleText to={HOME_PAGE_ROUTE}>Sync</TitleText>
-      <SearchInput placeholder="Find syncs..." />
+      {/* <SearchInput placeholder="Find syncs..." /> */}
       <Icons>
         <IconWrapper
           onClick={() => setTaskModal(true)}
@@ -88,6 +89,7 @@ const Icons = styled.div`
 
 const IconWrapper = styled.button<{ last?: boolean }>`
   ${DarkHover()}
+  ${BoxShadow}
   display: flex;
   align-items: center;
   justify-content: center;

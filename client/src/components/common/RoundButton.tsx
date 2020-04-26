@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DarkHover } from '../../constants/Styles';
+import { DarkHover, BoxShadow } from '../../constants/Styles';
 
 interface RoundButtonProps {
   textColor?: string;
@@ -39,6 +39,7 @@ const RoundButtonStyle = styled.button<{
   margin: string;
 }>`
   ${DarkHover()}
+  ${BoxShadow}
   text-align: center;
   display: flex;
   justify-content: center;
