@@ -18,6 +18,7 @@ import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
 import { Sync, User } from '../../graphql/Schema';
 import { currentUserId } from '../../utils/Auth';
+import { GET_FEED } from '../../graphql/Queries';
 
 const INSERT_SYNC = gql`
   mutation insertSync(
@@ -36,6 +37,7 @@ const INSERT_SYNC = gql`
       }
     ) {
       returning {
+        id
         ...SyncInfo
         ...SyncUsers
       }
@@ -83,17 +85,29 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
   theme,
   closeModal,
 }) => {
+  const userId = currentUserId();
   const [name, setName] = useState<string>('');
   const [publicSync, setPublicSync] = useState<number>(1);
   const [deadline, setDeadline] = useState<Date | null>(null);
+  const [invitedUsers, setInvitedUsers] = useState<any[]>([]);
 
   const { loading, data: userData } = useQuery<{ user: User[] }>(GET_USER, {
-    variables: { user_id: currentUserId() },
+    variables: { user_id: userId },
   });
 
   const [insertSyncInvitedUserMutation] = useMutation(
     INSERT_SYNC_INVITED_USER,
     {
+      refetchQueries: [
+        {
+          query: GET_FEED,
+          variables: { public: true },
+        },
+        {
+          query: GET_FEED,
+          variables: { public: false },
+        },
+      ],
       onError: (e) => console.log(e.message),
       onCompleted: (data) => {
         console.log(data);
@@ -101,11 +115,20 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
     },
   );
 
-  const [insertSyncMutation] = useMutation<{ returning: Sync }>(INSERT_SYNC, {
+  const [insertSyncMutation] = useMutation<any>(INSERT_SYNC, {
     onError: (e) => console.log(e.message),
     onCompleted: (data) => {
+      const invitations = invitedUsers.map((user: any) => {
+        return { sync_id: data.insert_sync.returning[0].id, user_id: user.id };
+      });
+
       insertSyncInvitedUserMutation({
-        variables: { invited: [{ sync_id: data.returning.id, user_id: 1 }] },
+        variables: {
+          invited: [
+            { sync_id: data.insert_sync.returning[0].id, user_id: userId },
+            ...invitations,
+          ],
+        },
       });
     },
   });
@@ -126,11 +149,13 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         </InputIcon>
         <StyledSelect
           isMulti
+          onChange={(value: any[]) => setInvitedUsers(value)}
           options={
             loading
               ? []
               : userData?.user[0].friends.map((user) => {
                   return {
+                    id: user.id,
                     value: user.username,
                     label: `@${user.username}`,
                   };

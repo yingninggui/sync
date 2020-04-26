@@ -1,25 +1,13 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import Button from '../../common/Button';
 import { PageContent } from '../../../constants/Styles';
 import SyncCard from './SyncCard';
 import { Sync } from '../../../graphql/Schema';
-import { SyncFragment } from '../../../graphql/Fragments';
+import { GET_FEED } from '../../../graphql/Queries';
 import Spinner from '../../common/Spinner';
-
-const GET_FEED = gql`
-  query getPublicFeed($public: Boolean!) {
-    sync(where: { public: { _eq: $public } }) {
-      ...SyncInfo
-      ...SyncUsers
-    }
-  }
-  ${SyncFragment.syncInfo}
-  ${SyncFragment.syncUsers}
-`;
 
 const HomePage: React.FC<any> = ({ theme }) => {
   const [publicFeed, setPublicFeed] = useState<boolean>(false);

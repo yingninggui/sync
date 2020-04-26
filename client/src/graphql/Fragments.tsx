@@ -54,4 +54,16 @@ export const UserFragment = {
       username
     }
   `,
+  userFriendsCommunity: gql`
+    fragment UserFriendsCommunity on user {
+      friends {
+        id
+        username
+      }
+      communities {
+        id
+        name
+      }
+    }
+  `,
 };

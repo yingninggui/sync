@@ -1,14 +1,14 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import _ from 'lodash';
-import { useQuery, useMutation, useLazyQuery } from '@apollo/react-hooks';
+import { useMutation, useLazyQuery } from '@apollo/react-hooks';
 import { User } from '../../../graphql/Schema';
 
 import { BorderRadius, Input, Body } from '../../../constants/Styles';
 import Button from '../../common/Button';
 import { currentUserId } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
+import { GET_USER } from '../../../graphql/Queries';
 
 const INSERT_NEW_FRIEND = gql`
   mutation add_friend($from_id: Int!, $to_id: Int!) {
@@ -42,6 +42,12 @@ const AddFriendModal: React.FC<AddFriendModalProps> = ({
   const [notInFriendsList, setNotInFriendsList] = useState<User[]>([]);
 
   const [addFriend] = useMutation<{ returning: User }>(INSERT_NEW_FRIEND, {
+    refetchQueries: [
+      {
+        query: GET_USER,
+        variables: { user_id: userId },
+      },
+    ],
     onError: (e) => console.log(e.message),
     onCompleted: () => console.log('Hooray'),
   });
@@ -84,7 +90,9 @@ const AddFriendModal: React.FC<AddFriendModalProps> = ({
                   to_id: user.id,
                 },
               });
-              closeModal();
+              setNotInFriendsList(
+                notInFriendsList.filter((u) => u.id !== user.id),
+              );
             }}
           >
             Add

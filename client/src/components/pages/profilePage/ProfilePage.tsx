@@ -3,11 +3,11 @@ import styled, { withTheme } from 'styled-components';
 import { Modal } from 'reactstrap';
 import { useQuery } from '@apollo/react-hooks';
 import { Plus } from 'react-feather';
-import gql from 'graphql-tag';
 
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
 import { Community, User } from '../../../graphql/Schema';
+import { GET_USER } from '../../../graphql/Queries';
 import {
   PageContent,
   Heading1,
@@ -18,23 +18,6 @@ import {
 import AddFriendModal from './AddFriendModal';
 import { currentUserId } from '../../../utils/Auth';
 import Spinner from '../../common/Spinner';
-
-const GET_USER = gql`
-  query getUser($user_id: Int!) {
-    user(where: { id: { _eq: $user_id } }) {
-      id
-      username
-      friends {
-        id
-        username
-      }
-      communities {
-        id
-        name
-      }
-    }
-  }
-`;
 
 const ProfilePage: React.FC<any> = ({ theme }) => {
   const [addFriendModal, setAddFriendModal] = useState<boolean>(false);
