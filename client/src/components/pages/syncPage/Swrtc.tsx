@@ -31,15 +31,12 @@ const Swrtc: React.FC<any> = (props) => {
         <SWRTC.RemoteAudioPlayer />
 
         {/* Connect to a room with a name and optional password */}
-        <SWRTC.Room name={syncID}>
-          <SWRTC.PeerList
-            room={syncID}
-            render={({ peers }) => {
-              console.log(peers);
-              return <SyncPage {...props} peers={peers} />;
-            }}
-          />
-        </SWRTC.Room>
+        <SWRTC.Room
+          name={syncID}
+          render={({ peers }) => {
+            return <SyncPage {...props} peers={peers} />;
+          }}
+        ></SWRTC.Room>
       </SWRTC.Connected>
     </SWRTC.Provider>
   );
