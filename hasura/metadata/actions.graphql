@@ -25,9 +25,11 @@ input LoginCredentials {
 type RegisterResponse {
   access_token : String!
   user_id : Int!
+  username : String!
 }
 
 type LoginResponse {
   access_token : String!
   user_id : Int!
+  username : String!
 }

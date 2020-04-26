@@ -25,6 +25,7 @@ const SIGN_UP = gql`
     ) {
       access_token
       user_id
+      username
     }
   }
 `;
@@ -34,6 +35,7 @@ const LOG_IN = gql`
     login_user(credentials: { email: $email, password: $password }) {
       access_token
       user_id
+      username
     }
   }
 `;

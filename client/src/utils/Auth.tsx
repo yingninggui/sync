@@ -10,6 +10,7 @@ export const logOut = (): void => {
 export const logIn = (response: LogInResponse): void => {
   localStorage.setItem('token', response.access_token);
   localStorage.setItem('user_id', String(response.user_id));
+  localStorage.setItem('username', String(response.username));
 };
 
 export const isLoggedIn = (): boolean => {
@@ -20,4 +21,8 @@ export const isLoggedIn = (): boolean => {
 
 export const currentUserId = (): number => {
   return Number(localStorage.getItem('user_id'));
+};
+
+export const currentUsername = (): string => {
+  return localStorage.getItem('username') || '';
 };
