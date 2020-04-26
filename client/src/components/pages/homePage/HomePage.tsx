@@ -22,7 +22,7 @@ const GET_FEED = gql`
 `;
 
 const HomePage: React.FC<any> = ({ theme }) => {
-  const [publicFeed, setPublicFeed] = useState<boolean>(true);
+  const [publicFeed, setPublicFeed] = useState<boolean>(false);
   const { loading, error, data } = useQuery<{ sync: Sync[] }>(GET_FEED, {
     variables: { public: publicFeed },
   });
