@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { Modal } from 'reactstrap';
+import { Modal, Row } from 'reactstrap';
 import { useQuery } from '@apollo/react-hooks';
 import { Plus } from 'react-feather';
 
@@ -147,20 +147,22 @@ const UsernameBodyText = styled.div`
 
 const BodyText = styled.div`
   ${Body}
+  margin-top: 5px;
 `;
 
 const ListItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
   margin-right: 24px;
-  max-width: 75px;
+  width: 85px;
   margin-top: 8px;
+  height: 140px;
 `;
 
-const ListWrapper = styled.div`
+const ListWrapper = styled(Row)`
   ${PageContent}
   margin-top: 8px;
   margin-bottom: 24px;
