@@ -7,7 +7,7 @@ import url from 'url';
 import gql from 'graphql-tag';
 import _, { Dictionary } from 'lodash';
 
-import { currentUserId } from '../../../utils/Auth';
+import { currentUserId, currentUsername } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
@@ -90,13 +90,14 @@ const getDoneUsers = (
   return [usersDoneAll, stillWorking];
 };
 
-const SyncPage: React.FC<any> = ({ theme, match, history }) => {
+const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   const syncID = parseInt(match.params.syncID, 10);
   const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
     variables: { id: syncID },
   });
 
-  const userId = currentUserId();
+  const userId: number = currentUserId();
+  const myUsername: string = currentUsername();
 
   if (data && data.sync.length < 1) {
     throw new Error('No sync with this ID found');
@@ -147,12 +148,14 @@ const SyncPage: React.FC<any> = ({ theme, match, history }) => {
     setCSelected(userCompleted);
   }, [userCompleted.length]);
 
+  console.log(peers);
+
   return (
     <SyncPageWrapper>
       <Row>
-        {users.map((user, i) => (
+        {[myUsername, ...peers].map((username: string, i: number) => (
           <AvatarWrapper key={i}>
-            <Avatar name={user.username} letterSize={48} />
+            <Avatar name={username} letterSize={48} />
           </AvatarWrapper>
         ))}
       </Row>

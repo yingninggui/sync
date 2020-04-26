@@ -32,7 +32,10 @@ const Swrtc: React.FC<any> = (props) => {
 
         {/* Connect to a room with a name and optional password */}
         <SWRTC.Room name={syncID}>
-          <SyncPage {...props} />;
+          <SWRTC.PeerList
+            room={syncID}
+            render={({ peers }) => <SyncPage {...props} peers={peers} />}
+          />
         </SWRTC.Room>
       </SWRTC.Connected>
     </SWRTC.Provider>
