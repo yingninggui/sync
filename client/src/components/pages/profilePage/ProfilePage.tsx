@@ -4,6 +4,7 @@ import { Modal } from 'reactstrap';
 import { useQuery } from '@apollo/react-hooks';
 import { Plus } from 'react-feather';
 import gql from 'graphql-tag';
+import _ from 'lodash';
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
 import { User } from '../../../graphql/Schema';
@@ -17,8 +18,9 @@ import {
 
 const GET_FRIENDS = gql`
   query getFriends($user_id: Int!) {
-    user_by_pk(id: $user_id) {
+    user(where: { id: { _eq: $user_id } }) {
       friends {
+        id
         username
       }
     }
@@ -28,7 +30,16 @@ const GET_FRIENDS = gql`
 const ProfilePage: React.FC<any> = ({ theme }) => {
   const [addFriendModal, setAddFriendModal] = useState<boolean>(false);
   const [addCommunityModal, setAddCommunityModal] = useState<boolean>(false);
-  const { data } = useQuery<{ user_friends: { friends: User[] } }>(GET_FRIENDS);
+  const { loading, error, data } = useQuery<{ user: User[] }>(GET_FRIENDS, {
+    variables: { user_id: 4 },
+  });
+  console.log(loading, error, data);
+  if (data && data.user[0].friends.length < 1) {
+    throw new Error('Failed to find friends');
+  }
+  const userFriends: Array<User> = _.get(data, '.user[0].friends', []);
+  console.log('hi');
+  console.log(userFriends);
   return (
     <ProfilePageWrapper>
       <UserWrapper>
