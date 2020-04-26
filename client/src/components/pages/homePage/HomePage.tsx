@@ -67,4 +67,5 @@ const HomePageWrapper = styled.div`
 
 const Feed = styled.div`
   display: flex;
+  flex-direction: column;
 `;

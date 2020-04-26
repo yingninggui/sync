@@ -1,8 +1,10 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { Clock, Lock, Unlock, Users } from 'react-feather';
+import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
+import gql from 'graphql-tag';
 
+import { useMutation } from '@apollo/react-hooks';
 import {
   BorderRadius,
   Input,
@@ -13,6 +15,34 @@ import {
 import Button from '../common/Button';
 import { ThemeInterface } from '../../styled';
 import Dropdown from '../common/Dropdown';
+import { SyncFragment } from '../../graphql/Fragments';
+import { Sync } from '../../graphql/Schema';
+
+const INSERT_SYNC = gql`
+  mutation insertSync(
+    $name: String!
+    $public: Boolean!
+    $deadline: timestamptz
+  ) {
+    insert_sync(
+      objects: {
+        name: $name
+        deadline: $deadline
+        public: $public
+        community_id: 1
+      }
+    ) {
+      returning {
+        ...SyncInfo
+        ...SyncUsers
+      }
+    }
+  }
+  ${SyncFragment.syncInfo}
+  ${SyncFragment.syncUsers}
+`;
+
+const privacyOptions = ['Public', 'Private'];
 
 interface CreateSyncModalProps {
   theme: ThemeInterface;
@@ -23,19 +53,24 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
   theme,
   closeModal,
 }) => {
-  const [title, setTitle] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [publicSync, setPublicSync] = useState<number>(1);
-  const [deadline, setDeadline] = useState<Date>(new Date());
+  const [deadline, setDeadline] = useState<Date | null>(null);
+
+  const [insertSyncMutation] = useMutation<{ returning: Sync }>(INSERT_SYNC, {
+    onError: (e) => console.log(e.message),
+    onCompleted: (data) => {
+      console.log(data);
+    },
+  });
 
   return (
     <SyncModalWrapper>
       <CoverPhoto />
       <TextInput
-        placeholder="Title"
-        value={title}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setTitle(e.target.value)
-        }
+        placeholder="Name"
+        value={name}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
       />
       <InputWrapper>
         <InputIcon>
@@ -52,7 +87,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
           value={deadline}
           disableClock
           calendarIcon={null}
-          clearIcon={null}
+          clearIcon={<X size={14} />}
           maxDetail="minute"
         />
       </InputWrapper>
@@ -65,7 +100,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
           )}
         </InputIcon>
         <Dropdown
-          items={['Private', 'Public']}
+          items={privacyOptions}
           selectedIndex={publicSync}
           setSelectedIndex={setPublicSync}
         />
@@ -77,6 +112,13 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         </Button>
         <Button
           onClick={() => {
+            insertSyncMutation({
+              variables: {
+                name,
+                deadline: deadline?.toISOString(),
+                public: privacyOptions[publicSync] === 'Public',
+              },
+            });
             closeModal();
           }}
         >
@@ -154,7 +196,7 @@ const StyledDateTimePicker = styled(DateTimePicker)`
       color: ${({ theme }) => theme.primaryGrey} !important;
       font-weight: 700;
       ${DarkHover()}
-      
+
       &:focus, &:active {
         outline: none;
       }

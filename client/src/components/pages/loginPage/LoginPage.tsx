@@ -11,11 +11,7 @@ import { logIn, isLoggedIn } from '../../../utils/Auth';
 import { HOME_PAGE_ROUTE } from '../../../constants/Routes';
 
 const SIGN_UP = gql`
-  mutation signUpMutation(
-    $username: String!
-    $email: String!
-    $password: String!
-  ) {
+  mutation signUp($username: String!, $email: String!, $password: String!) {
     register_user(
       credentials: { username: $username, email: $email, password: $password }
     ) {
@@ -25,7 +21,7 @@ const SIGN_UP = gql`
 `;
 
 const LOG_IN = gql`
-  mutation logInMutation($email: String!, $password: String!) {
+  mutation logIn($email: String!, $password: String!) {
     login_user(credentials: { email: $email, password: $password }) {
       access_token
     }

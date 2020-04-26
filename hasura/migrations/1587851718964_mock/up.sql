@@ -11,6 +11,15 @@ FROM (VALUES ('yayimahuman'), ('ez'), ('dmytro'), ('therealyg'), ('theupquark'),
 INSERT INTO user_friend(from_id, to_id)
 VALUES (1, 2), (2, 1), (2, 3), (3, 2), (1, 4), (4, 1), (2, 4), (4, 2);
 
+-- yg is friends with everyone
+INSERT INTO user_friend(from_id, to_id)
+SELECT u.id, 4 FROM "user" u WHERE u.id != 4
+ON CONFLICT DO NOTHING;
+
+INSERT INTO user_friend(from_id, to_id)
+SELECT 4, u.id FROM "user" u WHERE u.id != 4
+ON CONFLICT DO NOTHING;
+
 INSERT INTO community(name)
 -- the hash is of 'password'
 VALUES ('University of Waterloo'), ('SE2022'), ('PD10'), ('MATH239'), ('SPCOM223'), ('CS349'), ('ECE105'), ('CHE102'), ('FINE130');

@@ -20,13 +20,14 @@ export interface LogIn {
 
 export interface Sync {
   id: number;
-  cover_photo_url: string;
-  description: string;
+  cover_photo_url?: string;
+  description?: string;
   name: string;
   public: boolean;
-  owner: User;
+  owner?: User;
   invited_users: User[];
   deadline?: string;
+  checkpoints?: Checkpoint[];
 }
 
 export interface User {
