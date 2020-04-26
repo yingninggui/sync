@@ -77,8 +77,8 @@ const getDoneUsers = (
   const usersDoneAll: User[] = [];
   const stillWorking: User[] = [];
 
-  Object.keys(idCounts).forEach((key) => {
-    const value: number = idCounts[key];
+  Object.keys(userMap).forEach((key) => {
+    const value: number = idCounts[key] || 0;
     const user: User = userMap[key];
     if (value === checkpoints.length) {
       usersDoneAll.push(user);
