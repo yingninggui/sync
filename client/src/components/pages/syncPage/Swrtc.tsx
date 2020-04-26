@@ -34,9 +34,10 @@ const Swrtc: React.FC<any> = (props) => {
         <SWRTC.Room
           name={syncID}
           render={({ peers }) => {
-            return <SyncPage {...props} peers={peers} />;
+            const names = peers.map((p) => (p.customerData as any).username);
+            return <SyncPage {...props} peers={names} />;
           }}
-        ></SWRTC.Room>
+        />
       </SWRTC.Connected>
     </SWRTC.Provider>
   );
