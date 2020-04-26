@@ -1,6 +1,6 @@
 INSERT INTO "user"(username, email, password_hash)
 -- the hash is of 'password'
-SELECT uname, uname || '@gmail.com', '$2b$12$uqjcEI91hEJwIuNmHQ9oge.Y0WG5DOakPAOvoyd3YaFjojfVDx9sm'
+SELECT uname, uname || '@uwaterloo.ca', '$2b$12$uqjcEI91hEJwIuNmHQ9oge.Y0WG5DOakPAOvoyd3YaFjojfVDx9sm'
 FROM (VALUES ('yayimahuman'), ('ez'), ('dmytro'), ('therealyg'), ('theupquark'), ('jayz'), ('moonlight'), ('json')) AS foo(uname);
 
 --        yayimahuman
@@ -45,7 +45,7 @@ VALUES (9, 1), (9, 4);
 INSERT INTO sync(name, description, cover_photo_url, deadline, community_id, owner_id, public)
 VALUES ('HackNow Online Hackathon', 'Let ''s make a website called Let''sSync', '/img/8.jpg', CURRENT_TIMESTAMP + '8 hour', 1, 2, TRUE),
        ('CS 341 Assignment 2', 'Everyone welcome to join', '/img/1.jpg', CURRENT_TIMESTAMP + '1 day', 1, 1, FALSE),
-       ('CS 350 Final Exam', 'Yay operating systems', '/img/2.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE);
+       ('CS 350 Final Exam Preparation', 'Yay operating systems', '/img/2.jpg', CURRENT_TIMESTAMP + '4 day', 1, 1, FALSE);
 
 INSERT INTO sync_invited_user(sync_id, user_id)
 SELECT 1, u.id FROM "user" u;
