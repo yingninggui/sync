@@ -15,6 +15,7 @@ import {
   Body,
   BorderRadius,
 } from '../../../constants/Styles';
+import AddFriendModal from './AddFriendModal';
 
 const GET_FRIENDS = gql`
   query getFriends($user_id: Int!) {
@@ -102,9 +103,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
         isOpen={addFriendModal}
         toggle={() => setAddFriendModal(!addFriendModal)}
       >
-        <ModalStyle>
-          <SearchInput placeholder="Find friends..." />
-        </ModalStyle>
+        <AddFriendModal closeModal={() => setTaskModal(false)} />
       </Modal>
       <Modal
         centered
