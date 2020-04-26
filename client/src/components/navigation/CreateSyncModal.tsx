@@ -76,7 +76,6 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
       console.log(data);
     },
   });
-  getPhoto('flowers');
 
   return (
     <SyncModalWrapper>
@@ -84,7 +83,10 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
       <TextInput
         placeholder="Name"
         value={name}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          setName(e.target.value);
+          getPhoto(name);
+        }}
       />
       <InputWrapper>
         <InputIcon>
