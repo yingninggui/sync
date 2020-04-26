@@ -3,6 +3,7 @@ import styled, { withTheme } from 'styled-components';
 import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
 import gql from 'graphql-tag';
+import Unsplash, { toJson } from 'unsplash-js';
 
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -18,6 +19,18 @@ import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
 import { Sync } from '../../graphql/Schema';
 
+const unsplash = new Unsplash({
+  accessKey: '{YTgX2V-LpXqs0d1IAqpT1xzC_z26uZd_rVRgrElPf40}',
+});
+
+function getPhoto(title: string) {
+  unsplash.photos
+    .getRandomPhoto({ query: title })
+    .then(toJson)
+    .then((json) => {
+      console.log(json.links.html);
+    });
+}
 const INSERT_SYNC = gql`
   mutation insertSync(
     $name: String!
@@ -63,6 +76,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
       console.log(data);
     },
   });
+  getPhoto('flowers');
 
   return (
     <SyncModalWrapper>
