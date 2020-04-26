@@ -7,9 +7,8 @@ import { Modal } from 'reactstrap';
 import {
   PageContent,
   Heading1,
-  DarkHover,
   Input,
-  BoxShadow,
+  GreenIcon,
 } from '../../constants/Styles';
 import {
   PROFILE_PAGE_ROUTE,
@@ -93,20 +92,6 @@ const Icons = styled.div`
 `;
 
 const IconWrapper = styled.button<{ last?: boolean }>`
-  ${DarkHover()}
-  ${BoxShadow}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  height: 36px;
-  width: 36px;
-  background: ${({ theme }) => theme.primary};
-  border: none;
-  outline: none;
+  ${GreenIcon}
   margin-right: ${({ last }) => (last ? 0 : 8)}px;
-
-  svg {
-    stroke: ${({ theme }) => theme.white};
-  }
 `;

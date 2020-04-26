@@ -23,3 +23,16 @@ export const GET_USER = gql`
   ${UserFragment.userInfo}
   ${UserFragment.userFriendsCommunity}
 `;
+
+export const GET_SYNC_DETAILS = gql`
+  query getSyncDetails($id: Int!) {
+    sync(where: { id: { _eq: $id } }) {
+      ...SyncInfo
+      ...SyncUsers
+      ...SyncCheckpoints
+    }
+  }
+  ${SyncFragment.syncInfo}
+  ${SyncFragment.syncUsers}
+  ${SyncFragment.syncCheckpoints}
+`;

@@ -16,7 +16,7 @@ import Button from '../common/Button';
 import { ThemeInterface } from '../../styled';
 import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
-import { Sync, User } from '../../graphql/Schema';
+import { User } from '../../graphql/Schema';
 import { currentUserId } from '../../utils/Auth';
 import { GET_FEED } from '../../graphql/Queries';
 

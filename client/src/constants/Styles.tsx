@@ -109,3 +109,21 @@ export const FadeInAnimation = keyframes`
     opacity: 1;
   }
 `;
+
+export const GreenIcon = css`
+  ${DarkHover()}
+  ${BoxShadow}
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  background: ${({ theme }) => theme.primary};
+  border: none;
+  outline: none;
+
+  svg {
+    stroke: ${({ theme }) => theme.white};
+  }
+`;

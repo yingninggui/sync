@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PhoneMissed, MicOff } from 'react-feather';
+import { PhoneMissed, MicOff, Plus } from 'react-feather';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import styled, { withTheme } from 'styled-components';
 import { withRouter } from 'react-router-dom';
@@ -11,24 +11,16 @@ import { currentUserId, currentUsername } from '../../../utils/Auth';
 import Avatar from '../../common/Avatar';
 import RoundButton from '../../common/RoundButton';
 import Checkbox from '../../common/Checkbox';
-import { BorderRadius, Heading2, Card } from '../../../constants/Styles';
+import {
+  BorderRadius,
+  Heading2,
+  Card,
+  GreenIcon,
+} from '../../../constants/Styles';
 
 import { User, Checkpoint, Sync } from '../../../graphql/Schema';
-import { SyncFragment } from '../../../graphql/Fragments';
 import { HOME_PAGE_ROUTE } from '../../../constants/Routes';
-
-const GET_SYNC_DETAILS = gql`
-  query getSyncDetails($id: Int!) {
-    sync(where: { id: { _eq: $id } }) {
-      ...SyncInfo
-      ...SyncUsers
-      ...SyncCheckpoints
-    }
-  }
-  ${SyncFragment.syncInfo}
-  ${SyncFragment.syncUsers}
-  ${SyncFragment.syncCheckpoints}
-`;
+import { GET_SYNC_DETAILS } from '../../../graphql/Queries';
 
 const SET_CHECKPOINT_COMPLETED = gql`
   mutation setCheckpointCompleted($checkpointId: Int!, $userId: Int!) {
@@ -115,12 +107,16 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   // set checkpoint completed == false
   const [setCompletedMutation] = useMutation<{
     insert_user_completed_checkpoint_one: Checkpoint;
-  }>(SET_CHECKPOINT_COMPLETED, {});
+  }>(SET_CHECKPOINT_COMPLETED, {
+    refetchQueries: [{ query: GET_SYNC_DETAILS, variables: { id: syncID } }],
+  });
 
   // set checkpoint completed == true
   const [deleteCompletedMutation] = useMutation<{
     delete_user_completed_checkpoint: Checkpoint;
-  }>(DELETE_CHECKPOINT_COMPLETED, {});
+  }>(DELETE_CHECKPOINT_COMPLETED, {
+    refetchQueries: [{ query: GET_SYNC_DETAILS, variables: { id: syncID } }],
+  });
 
   const [cSelected, setCSelected] = useState<number[]>([]);
   const onCheckboxBtnClick = (selectedId: any) => {
@@ -160,7 +156,12 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
       <Row>
         <Col style={{ padding: '0px 40px' }}>
           <SyncPageCard>
-            <BoxHeading>Checkpoints</BoxHeading>
+            <Row style={{ justifyContent: 'space-between' }}>
+              <BoxHeading>Checkpoints</BoxHeading>
+              <IconWrapper>
+                <Plus />
+              </IconWrapper>
+            </Row>
             {checkpoints.map(({ id: checkpointId, name }) => (
               <Checkbox
                 key={checkpointId}
@@ -252,6 +253,10 @@ const AvatarWrapper = styled.div<{
   margin?: number;
 }>`
   margin: 0px ${({ margin }) => margin || 16}px;
+`;
+
+const IconWrapper = styled.div`
+  ${GreenIcon}
 `;
 
 const BoxHeading = styled.div`
