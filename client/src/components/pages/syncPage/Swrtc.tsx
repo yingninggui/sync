@@ -2,6 +2,7 @@ import React from 'react';
 import { Row } from 'reactstrap';
 import * as SWRTC from '@andyet/simplewebrtc';
 
+import { currentUsername } from '../../../utils/Auth';
 import SyncPage from './SyncPage';
 import Spinner from '../../common/Spinner';
 
@@ -11,8 +12,10 @@ const CONFIG_URL = `https://api.simplewebrtc.com/config/guest/${API_KEY}`;
 
 const Swrtc: React.FC<any> = (props) => {
   const { syncID } = props.match.params;
+
+  const username: string = currentUsername();
   return (
-    <SWRTC.Provider configUrl={CONFIG_URL}>
+    <SWRTC.Provider configUrl={CONFIG_URL} userData={username}>
       {/* Render based on the connection state */}
       <SWRTC.Connecting>
         <Row style={{ justifyContent: 'center' }}>

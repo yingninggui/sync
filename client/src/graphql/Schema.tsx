@@ -17,6 +17,7 @@ export interface Community {
 export interface LogInResponse {
   access_token: string;
   user_id: number;
+  username: string;
 }
 
 export interface Sync {
