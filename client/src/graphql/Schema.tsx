@@ -36,4 +36,5 @@ export interface User {
   username: string;
   email?: string;
   friends: User[];
+  communities: Community[];
 }

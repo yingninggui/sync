@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import _ from 'lodash';
 import Avatar from '../../common/Avatar';
 import CircleButton from '../../common/CircleButton';
-import { User } from '../../../graphql/Schema';
+import { Community, User } from '../../../graphql/Schema';
 import {
   PageContent,
   Heading1,
@@ -22,6 +22,10 @@ const GET_FRIENDS = gql`
       friends {
         id
         username
+      }
+      communities {
+        id
+        name
       }
     }
   }
@@ -38,6 +42,7 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
     throw new Error('Failed to find friends');
   }
   const friends: Array<User> = _.get(data, 'user[0].friends', []);
+  const communities: Array<Community> = _.get(data, 'user[0].communities', []);
 
   return (
     <ProfilePageWrapper>
@@ -63,6 +68,12 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
           </CircleButton>
           <BodyText>+friends</BodyText>
         </ListItemWrapper>
+        {friends.slice(0, 6).map((friend, idx) => (
+          <ListItemWrapper key={idx}>
+            <Avatar dimension={80} letterSize={25} name={friend.username} />
+            <BodyText>{friend.username}</BodyText>
+          </ListItemWrapper>
+        ))}
       </ListWrapper>
       <TitleText>Communities</TitleText>
       <ListWrapper>
@@ -79,18 +90,12 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
           </CircleButton>
           <BodyText>+community</BodyText>
         </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'se2022'} />
-          <BodyText>@software</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'math239'} />
-          <BodyText>@math239</BodyText>
-        </ListItemWrapper>
-        <ListItemWrapper>
-          <Avatar dimension={80} letterSize={25} name={'waterloo'} />
-          <BodyText>@waterloo</BodyText>
-        </ListItemWrapper>
+        {communities.slice(0, 6).map((community, idx) => (
+          <ListItemWrapper key={idx}>
+            <Avatar dimension={80} letterSize={25} name={community.name} />
+            <BodyText>{community.name}</BodyText>
+          </ListItemWrapper>
+        ))}
       </ListWrapper>
       <Modal
         centered
@@ -149,6 +154,7 @@ const ListItemWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 24px;
+  max-width: 75px;
 `;
 
 const ListWrapper = styled.div`
