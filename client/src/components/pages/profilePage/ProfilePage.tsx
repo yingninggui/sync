@@ -37,9 +37,8 @@ const ProfilePage: React.FC<any> = ({ theme }) => {
   if (data && data.user[0].friends.length < 1) {
     throw new Error('Failed to find friends');
   }
-  const userFriends: Array<User> = _.get(data, '.user[0].friends', []);
-  console.log('hi');
-  console.log(userFriends);
+  const friends: Array<User> = _.get(data, 'user[0].friends', []);
+
   return (
     <ProfilePageWrapper>
       <UserWrapper>
