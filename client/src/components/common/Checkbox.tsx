@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { CheckSquare } from 'react-feather';
 
-import {
-  Active,
-  Body,
-  BorderRadius,
-  DarkHover,
-  HoverTransition,
-} from '../../constants/Styles';
+import { Active, Body, HoverTransition } from '../../constants/Styles';
 
 interface CheckboxProps {
   theme: any;
@@ -26,7 +20,6 @@ const Checkbox: React.FC<CheckboxProps> = ({
   active,
   textColor,
   onClick = () => {},
-  children,
 }) => (
   <StyledCheckbox
     onClick={onClick}

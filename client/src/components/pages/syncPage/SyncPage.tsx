@@ -57,19 +57,22 @@ const DELETE_CHECKPOINT_COMPLETED = gql`
 
 const SyncPage: React.FC<any> = ({ theme, match }) => {
   const syncID = parseInt(match.params.syncID, 10);
-  const { loading, error, data } = useQuery<{ sync: Sync[] }>(
-    GET_SYNC_DETAILS,
-    {
-      variables: { id: syncID },
-    },
-  );
+  const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
+    variables: { id: syncID },
+  });
 
   const userId = 1;
 
   if (data && data.sync.length < 1) {
     throw new Error('No sync with this ID found');
   }
-  const users: Array<User> = _.get(data, 'sync[0].invited_users', []);
+  const users: Array<User> = [];
+  if (data) {
+    if (data.sync[0].owner) {
+      users.push(data.sync[0].owner);
+    }
+    users.push(...data.sync[0].invited_users);
+  }
   const checkpoints: Checkpoint[] = _.get(data, 'sync[0].checkpoints', []);
 
   // set checkpoint completed == false
@@ -111,7 +114,15 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
   return (
     <SyncPageWrapper>
       <div></div>
-      <Row>{users.map((user) => ({ name: user.username })).map(Avatar)}</Row>
+      <Row>
+        {users
+          .map((user) => ({ name: user.username }))
+          .map((user, i) => (
+            <AvatarWrapper key={i}>
+              <Avatar {...user} />
+            </AvatarWrapper>
+          ))}
+      </Row>
       <Row>
         <Col style={{ padding: '0px 50px' }}>
           <SyncPageCard>
@@ -141,18 +152,18 @@ const SyncPage: React.FC<any> = ({ theme, match }) => {
         <RoundButton
           textColor={theme.white}
           bgColor={theme.primary}
-          dimension={100}
+          dimension={80}
           margin="0px 20px"
         >
-          <MicOff size={50} />
+          <MicOff size={40} />
         </RoundButton>
         <RoundButton
           textColor={theme.white}
           bgColor={theme.error}
-          dimension={100}
+          dimension={80}
           margin="0px 20px"
         >
-          <PhoneMissed size={50} />
+          <PhoneMissed size={40} />
         </RoundButton>
       </Row>
       <div></div>
@@ -182,6 +193,10 @@ const SyncPageCard = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+`;
+
+const AvatarWrapper = styled.div`
+  margin: 0px 15px;
 `;
 
 export default withTheme(SyncPage);
