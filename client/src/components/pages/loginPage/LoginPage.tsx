@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Card, Link, Body, Input } from '../../../constants/Styles';
 import Button from '../../common/Button';
-import { LogIn } from '../../../graphql/Schema';
+import { LogInResponse } from '../../../graphql/Schema';
 import { logIn, isLoggedIn } from '../../../utils/Auth';
 import { HOME_PAGE_ROUTE } from '../../../constants/Routes';
 
@@ -16,6 +16,7 @@ const SIGN_UP = gql`
       credentials: { username: $username, email: $email, password: $password }
     ) {
       access_token
+      user_id
     }
   }
 `;
@@ -24,6 +25,7 @@ const LOG_IN = gql`
   mutation logIn($email: String!, $password: String!) {
     login_user(credentials: { email: $email, password: $password }) {
       access_token
+      user_id
     }
   }
 `;
@@ -43,18 +45,21 @@ const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
     }
   }, [history]);
 
-  const [signUpMutation] = useMutation<{ register_user: LogIn }>(SIGN_UP, {
-    onError: (e) => setError(e.message),
-    onCompleted: (data) => {
-      logIn(data.register_user.access_token);
-      history.push(HOME_PAGE_ROUTE);
+  const [signUpMutation] = useMutation<{ register_user: LogInResponse }>(
+    SIGN_UP,
+    {
+      onError: (e) => setError(e.message),
+      onCompleted: (data) => {
+        logIn(data.register_user);
+        history.push(HOME_PAGE_ROUTE);
+      },
     },
-  });
+  );
 
-  const [logInMutation] = useMutation<{ login_user: LogIn }>(LOG_IN, {
+  const [logInMutation] = useMutation<{ login_user: LogInResponse }>(LOG_IN, {
     onError: (e) => setError(e.message),
     onCompleted: (data) => {
-      logIn(data.login_user.access_token);
+      logIn(data.login_user);
       history.push(HOME_PAGE_ROUTE);
     },
   });
