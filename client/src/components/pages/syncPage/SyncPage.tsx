@@ -95,7 +95,6 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   const { data } = useQuery<{ sync: Sync[] }>(GET_SYNC_DETAILS, {
     variables: { id: syncID },
   });
-  console.log(peers);
 
   const userId: number = currentUserId();
   const myUsername: string = currentUsername();
@@ -148,8 +147,6 @@ const SyncPage: React.FC<any> = ({ theme, match, history, peers }) => {
   useEffect(() => {
     setCSelected(userCompleted);
   }, [userCompleted.length]);
-
-  console.log([myUsername, ...peers]);
 
   return (
     <SyncPageWrapper>

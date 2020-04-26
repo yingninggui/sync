@@ -12,8 +12,8 @@ const CONFIG_URL = `https://api.simplewebrtc.com/config/guest/${API_KEY}`;
 
 const Swrtc: React.FC<any> = (props) => {
   const { syncID } = props.match.params;
-
   const username: string = currentUsername();
+
   return (
     <SWRTC.Provider configUrl={CONFIG_URL} userData={username}>
       {/* Render based on the connection state */}
@@ -34,7 +34,10 @@ const Swrtc: React.FC<any> = (props) => {
         <SWRTC.Room name={syncID}>
           <SWRTC.PeerList
             room={syncID}
-            render={({ peers }) => <SyncPage {...props} peers={peers} />}
+            render={({ peers }) => {
+              console.log(peers);
+              return <SyncPage {...props} peers={peers} />;
+            }}
           />
         </SWRTC.Room>
       </SWRTC.Connected>

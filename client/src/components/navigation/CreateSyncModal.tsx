@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent } from 'react';
+import Select from 'react-select';
 import styled, { withTheme } from 'styled-components';
 import { Clock, Lock, Unlock, Users, X } from 'react-feather';
 import DateTimePicker from 'react-datetime-picker';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   BorderRadius,
   Input,
@@ -15,13 +16,15 @@ import Button from '../common/Button';
 import { ThemeInterface } from '../../styled';
 import Dropdown from '../common/Dropdown';
 import { SyncFragment } from '../../graphql/Fragments';
-import { Sync } from '../../graphql/Schema';
+import { Sync, User } from '../../graphql/Schema';
+import { currentUserId } from '../../utils/Auth';
 
 const INSERT_SYNC = gql`
   mutation insertSync(
     $name: String!
     $public: Boolean!
     $deadline: timestamptz
+    $cover_photo_url: String!
   ) {
     insert_sync(
       objects: {
@@ -29,6 +32,7 @@ const INSERT_SYNC = gql`
         deadline: $deadline
         public: $public
         community_id: 1
+        cover_photo_url: $cover_photo_url
       }
     ) {
       returning {
@@ -41,7 +45,34 @@ const INSERT_SYNC = gql`
   ${SyncFragment.syncUsers}
 `;
 
+const INSERT_SYNC_INVITED_USER = gql`
+  mutation insertSyncInvitedUser($invited: [sync_invited_user_insert_input!]!) {
+    insert_sync_invited_user(objects: $invited) {
+      affected_rows
+    }
+  }
+`;
+
+const GET_USER = gql`
+  query getUser($user_id: Int!) {
+    user(where: { id: { _eq: $user_id } }) {
+      id
+      username
+      friends {
+        id
+        username
+      }
+      communities {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const privacyOptions = ['Public', 'Private'];
+
+const imageUrl = `/img/${Math.floor(Math.random() * 10 + 1)}.jpg`;
 
 interface CreateSyncModalProps {
   theme: ThemeInterface;
@@ -56,16 +87,32 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
   const [publicSync, setPublicSync] = useState<number>(1);
   const [deadline, setDeadline] = useState<Date | null>(null);
 
+  const { loading, data: userData } = useQuery<{ user: User[] }>(GET_USER, {
+    variables: { user_id: currentUserId() },
+  });
+
+  const [insertSyncInvitedUserMutation] = useMutation(
+    INSERT_SYNC_INVITED_USER,
+    {
+      onError: (e) => console.log(e.message),
+      onCompleted: (data) => {
+        console.log(data);
+      },
+    },
+  );
+
   const [insertSyncMutation] = useMutation<{ returning: Sync }>(INSERT_SYNC, {
     onError: (e) => console.log(e.message),
     onCompleted: (data) => {
-      console.log(data);
+      insertSyncInvitedUserMutation({
+        variables: { invited: [{ sync_id: data.returning.id, user_id: 1 }] },
+      });
     },
   });
 
   return (
     <SyncModalWrapper>
-      <CoverPhoto />
+      <CoverPhoto url={imageUrl} />
       <TextInput
         placeholder="Name"
         value={name}
@@ -77,7 +124,19 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
         <InputIcon>
           <Users color={theme.light4} />
         </InputIcon>
-        <TextInput placeholder="Invite friends @" />
+        <StyledSelect
+          isMulti
+          options={
+            loading
+              ? []
+              : userData?.user[0].friends.map((user) => {
+                  return {
+                    value: user.username,
+                    label: `@${user.username}`,
+                  };
+                })
+          }
+        />
       </InputWrapper>
       <InputWrapper>
         <InputIcon>
@@ -94,7 +153,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
       </InputWrapper>
       <InputWrapper>
         <InputIcon>
-          {publicSync ? (
+          {privacyOptions[publicSync] === 'Public' ? (
             <Unlock color={theme.light4} />
           ) : (
             <Lock color={theme.light4} />
@@ -117,6 +176,7 @@ const CreateSyncModal: React.FC<CreateSyncModalProps> = ({
                 name,
                 deadline: deadline?.toISOString(),
                 public: privacyOptions[publicSync] === 'Public',
+                cover_photo_url: imageUrl,
               },
             });
             closeModal();
@@ -140,10 +200,10 @@ const SyncModalWrapper = styled.div`
   position: relative;
 `;
 
-const CoverPhoto = styled.div`
+const CoverPhoto = styled.div<{ url: string }>`
   ${BorderRadius}
   height: 120px;
-  background: url('/img/${Math.floor(Math.random() * 10 + 1)}.jpg');
+  background: url(${({ url }) => url});
   background-size: cover;
   background-position: center;
   margin-bottom: 8px;
@@ -169,6 +229,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-content: flex-end;
   margin-left: auto;
+`;
+
+const StyledSelect = styled(Select)`
+  display: flex;
+  flex: 1;
+  width: 100%;
+
+  & > div {
+    flex: 1;
+  }
 `;
 
 const StyledDateTimePicker = styled(DateTimePicker)`
