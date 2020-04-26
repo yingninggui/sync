@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'reactstrap';
 import * as SWRTC from '@andyet/simplewebrtc';
 
 import SyncPage from './SyncPage';
@@ -15,7 +16,9 @@ const Swrtc: React.FC<any> = (props) => {
     <SWRTC.Provider configUrl={CONFIG_URL}>
       {/* Render based on the connection state */}
       <SWRTC.Connecting>
-        <Spinner />
+        <Row style={{ justifyContent: 'center' }}>
+          <Spinner />
+        </Row>
       </SWRTC.Connecting>
 
       <SWRTC.Connected>
