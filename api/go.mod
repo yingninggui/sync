@@ -6,5 +6,5 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/jackc/pgconn v1.5.0
 	github.com/jackc/pgx/v4 v4.6.0
-	golang.org/x/crypto v0.0.0-20200423211502-4bdfaf469ed5
+	golang.org/x/crypto v0.1.0
 )
